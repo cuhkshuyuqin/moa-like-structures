@@ -1,4 +1,6 @@
-from BaseAgent import BaseAgent
+from .BaseAgent import BaseAgent
+from loguru import logger
+
 
 class Proposer(BaseAgent):
     """
@@ -13,14 +15,24 @@ class Proposer(BaseAgent):
             predecessors (List[BaseAgent]): Predecessor agents of the agent
             temperature (float)
         """
-        BaseAgent.__init__(model_name, query, [])
-        self.temperature = temperature
+        super().__init__(model_name, query, [], temperature)
+        logger.info(f"{str(self)} created")
 
     def get_messages(self):
-        return [{"role": "user", "content": self.query}]
+        messages = [{"role": "user", "content": self.query}]
+        logger.info(f"{str(self)} get_messages:\n{messages}")
+        return messages
+
+    def __repr__(self):
+        return (
+            f"Proposer with name {self.model_name} and predecessors {self.predecessors}"
+        )
 
     def __str__(self):
-        return f"Proposer with name {self.model_name} and predecessors {self.predecessors}"
+        return (
+            f"Proposer with name {self.model_name} and predecessors {self.predecessors}"
+        )
+
 
 if __name__ == "__main__":
     pass
