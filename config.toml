@@ -11,3 +11,6 @@ together = [
 azure = [
     "azure"
 ]
+vllm = [
+    "Qwen/Qwen2.5-1.5B-Instruct"
+]

@@ -2,9 +2,10 @@ from typing import List
 from together import Together
 import os
 from loguru import logger
-from openai import AzureOpenAI
+from openai import AzureOpenAI, OpenAI
+from vllm import LLM, SamplingParams
 
-from utils import DEBUG, TOGETHER_MODELS, AZURE_MODELS
+from utils import DEBUG, TOGETHER_MODELS, AZURE_MODELS, VLLM_MODELS
 
 
 class BaseAgent:
@@ -44,6 +45,10 @@ class BaseAgent:
             if model == self.model_name:
                 return self.generate_azure()
 
+        for model in VLLM_MODELS:
+            if model == self.model_name:
+                return self.generate_vllm()
+
     def generate_together(self):
         client = Together(api_key=os.environ.get("TOGETHER_API_KEY"))
         response = client.chat.completions.create(
@@ -59,14 +64,14 @@ class BaseAgent:
         return response_content
 
     def generate_azure(self):
-        llm = AzureOpenAI(
+        client = AzureOpenAI(
             api_key=os.getenv("AZURE_API_KEY"),
             api_version=os.getenv("AZURE_API_VERSION"),
             azure_endpoint=os.getenv("AZURE_ENDPOINT"),
         )
         azure_model_name = os.getenv("AZURE_MODEL_NAME")
 
-        response = llm.chat.completions.create(
+        response = client.chat.completions.create(
             model=azure_model_name,
             temperature=self.temperature,
             messages=self.get_messages(),
@@ -75,6 +80,24 @@ class BaseAgent:
 
         if DEBUG:
             logger.debug(f"{str(self)} generate_azure:\n{response_content}")
+
+        return response_content
+
+    def generate_vllm(self):
+        client = OpenAI(
+            api_key="EMPTY",
+            base_url="http://localhost:8000/v1",
+        )
+
+        response = client.chat.completions.create(
+            model=self.model_name,
+            temperature=self.temperature,
+            messages=self.get_messages(),
+        )
+        response_content = response.choices[0].message.content
+
+        if DEBUG:
+            logger.debug(f"{str(self)} generate_vllm:\n{response_content}")
 
         return response_content
 

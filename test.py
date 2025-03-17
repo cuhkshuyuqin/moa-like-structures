@@ -26,7 +26,7 @@ def inference_config_test():
     print(AZURE_MODELS)
 
 
-def multiple_source_test():
+def double_source_test():
     query = "What are 3 fun things to do in SF?"
 
     proposer1 = Proposer("microsoft/WizardLM-2-8x22B", query)
@@ -88,12 +88,24 @@ def vllm_api_test():
     messages = [{"role": "user", "content": "What is your version?"}]
 
     response = client.chat.completions.create(
-        model="Qwen/Qwen2.5-1.5B-Instruct",
-        messages=messages
+        model="Qwen/Qwen2.5-1.5B-Instruct", messages=messages
     )
     response_content = response.choices[0].message.content
     print(response_content)
 
 
+def triple_source_test():
+    query = "What are 3 fun things to do in SF?"
+
+    proposer1 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+    proposer2 = Proposer("azure", query)
+
+    aggregator = Aggregator(
+        "Qwen/Qwen2.5-Coder-32B-Instruct", query, [proposer1, proposer2]
+    )
+
+    print(aggregator.generate())
+
+
 if __name__ == "__main__":
-    vllm_api_test()
+    triple_source_test()
