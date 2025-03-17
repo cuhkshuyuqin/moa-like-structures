@@ -106,6 +106,7 @@ def triple_source_test():
 
     print(aggregator.generate())
 
+
 def multiple_vllm_source_test():
     query = "What are 3 fun things to do in SF?"
 
@@ -119,5 +120,29 @@ def multiple_vllm_source_test():
     print(aggregator.generate())
 
 
+def moa_structure_1_test():
+    query = "What are 3 fun things to do in SF?"
+
+    proposer1 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+    proposer2 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+    proposer3 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+
+    aggregator1 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [proposer1, proposer2, proposer3]
+    )
+    aggregator2 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [proposer1, proposer2, proposer3]
+    )
+    aggregator3 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [proposer1, proposer2, proposer3]
+    )
+
+    aggregator4 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [aggregator1, aggregator2, aggregator3]
+    )
+
+    print(aggregator4.generate())
+
+
 if __name__ == "__main__":
-    triple_source_test()
+    moa_structure_1_test()

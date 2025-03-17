@@ -3,9 +3,15 @@ from together import Together
 import os
 from loguru import logger
 from openai import AzureOpenAI, OpenAI
-from vllm import LLM, SamplingParams
 
-from utils import DEBUG, TOGETHER_MODELS, AZURE_MODELS, VLLM_MODELS, VLLM_HOSTS, VLLM_PORTS
+from utils import (
+    DEBUG,
+    TOGETHER_MODELS,
+    AZURE_MODELS,
+    VLLM_MODELS,
+    VLLM_HOSTS,
+    VLLM_PORTS,
+)
 
 
 class BaseAgent:
@@ -25,6 +31,7 @@ class BaseAgent:
         self.query = query
         self.predecessors: List[BaseAgent] = predecessors
         self.temperature = temperature
+        self.response = None
 
     def collect_predecessor_outputs(self):
         predecessor_outputs = []
@@ -37,17 +44,23 @@ class BaseAgent:
         raise Exception("Can NOT get_messages from a BaseAgent")
 
     def generate(self):
+        if self.response is not None:
+            return self.response
+
         for model in TOGETHER_MODELS:
             if model == self.model_name:
-                return self.generate_together()
+                self.response = self.generate_together()
+                return self.response
 
         for model in AZURE_MODELS:
             if model == self.model_name:
-                return self.generate_azure()
+                self.response = self.generate_azure()
+                return self.response
 
         for model in VLLM_MODELS:
             if model == self.model_name:
-                return self.generate_vllm()
+                self.response = self.generate_vllm()
+                return self.response
 
     def generate_together(self):
         client = Together(api_key=os.environ.get("TOGETHER_API_KEY"))
