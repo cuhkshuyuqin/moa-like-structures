@@ -1,2 +1,14 @@
 [logging]
 debug = true
+
+[inference]
+together = [
+    "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+    "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "Qwen/Qwen2.5-Coder-32B-Instruct",
+    "microsoft/WizardLM-2-8x22B"
+]
+openai = [
+    "gpt-4o-2024-02-15-preview",
+    "gpt-4o-2023-11-06-preview"
+]

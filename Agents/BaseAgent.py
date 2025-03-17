@@ -47,7 +47,7 @@ class BaseAgent:
             logger.debug(f"{str(self)} get_messages:\n{response_content}")
 
         return response_content
-    
+
     def generate_together(self):
         client = Together(api_key=os.environ.get("TOGETHER_API_KEY"))
         response = client.chat.completions.create(

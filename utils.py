@@ -1,8 +1,11 @@
 import toml
 
 
-config = toml.load('config.toml')
+config = toml.load("config.toml")
+logging_config = config["logging"]
+inference_config = config["inference"]
 
-logging_config = config['logging']
+DEBUG = logging_config["debug"]
 
-DEBUG = logging_config['debug']
+TOGETHER_MODELS = inference_config["together"]
+OPENAI_MODELS = inference_config["openai"]
