@@ -3,7 +3,7 @@ from together import Together
 import os
 from loguru import logger
 
-from utils import DEBUG
+from utils import DEBUG, TOGETHER_MODELS, AZURE_MODELS
 
 
 class BaseAgent:
@@ -35,18 +35,13 @@ class BaseAgent:
         raise Exception("Can NOT get_messages from a BaseAgent")
 
     def generate(self):
-        client = Together(api_key=os.environ.get("TOGETHER_API_KEY"))
-        response = client.chat.completions.create(
-            model=self.model_name,
-            messages=self.get_messages(),
-            temperature=self.temperature,
-        )
-        response_content = response.choices[0].message.content
-
-        if DEBUG:
-            logger.debug(f"{str(self)} get_messages:\n{response_content}")
-
-        return response_content
+        for model in TOGETHER_MODELS:
+            if model == model_name:
+                return self.generate_together()
+        
+        for model in AZURE_MODELS:
+            if model == model_name:
+                return self.generate_azure()
 
     def generate_together(self):
         client = Together(api_key=os.environ.get("TOGETHER_API_KEY"))
@@ -58,7 +53,27 @@ class BaseAgent:
         response_content = response.choices[0].message.content
 
         if DEBUG:
-            logger.debug(f"{str(self)} get_messages:\n{response_content}")
+            logger.debug(f"{str(self)} generate_together:\n{response_content}")
+
+        return response_content
+    
+    def generate_azure(self):
+        llm = AzureOpenAI(
+            api_key=os.getenv("AZURE_API_KEY"),
+            api_version=self.model_name.split('/')[1],
+            azure_endpoint=os.getenv("AZURE_ENDPOINT")
+        )
+        azure_model_name=os.getenv("AZURE_MODEL_NAME")
+
+        response = llm.chat.completions.create(
+            model=azure_model_name,
+            temperature=self.temperature,
+            messages=self.get_messages(),
+        )
+        response_content = response.choices[0].message.content
+
+        if DEBUG:
+            logger.debug(f"{str(self)} generate_azure:\n{response_content}")
 
         return response_content
 
