@@ -61,7 +61,7 @@ class BaseAgent:
     def generate_azure(self):
         llm = AzureOpenAI(
             api_key=os.getenv("AZURE_API_KEY"),
-            api_version=self.model_name.split("/")[1],
+            api_version=os.getenv("AZURE_API_VERSION"),
             azure_endpoint=os.getenv("AZURE_ENDPOINT"),
         )
         azure_model_name = os.getenv("AZURE_MODEL_NAME")

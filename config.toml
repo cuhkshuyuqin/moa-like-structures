@@ -9,6 +9,5 @@ together = [
     "microsoft/WizardLM-2-8x22B"
 ]
 azure = [
-    "gpt-4o/2024-02-15-preview",
-    "gpt-4o/2023-11-06-preview"
+    "azure"
 ]
