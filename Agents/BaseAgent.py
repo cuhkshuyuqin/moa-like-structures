@@ -5,7 +5,7 @@ from loguru import logger
 from openai import AzureOpenAI, OpenAI
 from vllm import LLM, SamplingParams
 
-from utils import DEBUG, TOGETHER_MODELS, AZURE_MODELS, VLLM_MODELS
+from utils import DEBUG, TOGETHER_MODELS, AZURE_MODELS, VLLM_MODELS, VLLM_HOSTS, VLLM_PORTS
 
 
 class BaseAgent:
@@ -86,7 +86,7 @@ class BaseAgent:
     def generate_vllm(self):
         client = OpenAI(
             api_key="EMPTY",
-            base_url="http://localhost:8000/v1",
+            base_url=f"http://{VLLM_HOSTS[self.model_name]}:{VLLM_PORTS[self.model_name]}/v1",
         )
 
         response = client.chat.completions.create(

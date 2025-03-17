@@ -106,6 +106,18 @@ def triple_source_test():
 
     print(aggregator.generate())
 
+def multiple_vllm_source_test():
+    query = "What are 3 fun things to do in SF?"
+
+    proposer1 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+    proposer2 = Proposer("azure", query)
+
+    aggregator = Aggregator(
+        "Qwen/Qwen2.5-Coder-32B-Instruct", query, [proposer1, proposer2]
+    )
+
+    print(aggregator.generate())
+
 
 if __name__ == "__main__":
     triple_source_test()

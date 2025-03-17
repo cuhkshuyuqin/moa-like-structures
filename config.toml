@@ -6,11 +6,22 @@ together = [
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
     "Qwen/Qwen2.5-72B-Instruct-Turbo",
     "Qwen/Qwen2.5-Coder-32B-Instruct",
-    "microsoft/WizardLM-2-8x22B"
+    "microsoft/WizardLM-2-8x22B",
 ]
 azure = [
-    "azure"
+    "azure",
 ]
 vllm = [
-    "Qwen/Qwen2.5-1.5B-Instruct"
+    "Qwen/Qwen2.5-1.5B-Instruct",
+    "meta-llama/Llama-3.2-1B",
 ]
+
+[inference.vllm_hosts]
+"Qwen/Qwen2.5-1.5B-Instruct" = "localhost"
+"meta-llama/Llama-3.2-1B" = "localhost"
+"google/gemma-3-1b-it" = "localhost"
+
+[inference.vllm_ports]
+"Qwen/Qwen2.5-1.5B-Instruct" = 8000
+"meta-llama/Llama-3.2-1B" = 8001
+"google/gemma-3-1b-it" = 8002
