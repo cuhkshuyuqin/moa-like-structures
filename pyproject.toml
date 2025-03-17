@@ -9,6 +9,7 @@ dependencies = [
     "openai>=1.66.3",
     "together>=1.4.6",
     "toml>=0.10.2",
+    "vllm>=0.7.3",
 ]
 
 [dependency-groups]

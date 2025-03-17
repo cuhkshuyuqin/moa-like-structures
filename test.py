@@ -1,5 +1,6 @@
-from openai import AzureOpenAI
+from openai import AzureOpenAI, OpenAI
 import os
+from vllm import LLM, SamplingParams
 
 from Agents.Proposer import Proposer
 from Agents.Aggregator import Aggregator
@@ -57,5 +58,42 @@ def azure_version_test():
     print(response_content)
 
 
+def vllm_test():
+    prompts = [
+        "Hello, my name is",
+        "The president of the United States is",
+        "The capital of France is",
+        "The future of AI is",
+    ]
+    sampling_params = SamplingParams(temperature=0.8, top_p=0.95)
+
+    llm = LLM(model="Qwen/Qwen2.5-1.5B-Instruct")
+
+    outputs = llm.generate(prompts, sampling_params)
+
+    for output in outputs:
+        prompt = output.prompt
+        generated_text = output.outputs[0].text
+        print(f"Prompt: {prompt!r}, Generated text: {generated_text!r}")
+
+
+def vllm_api_test():
+    openai_api_key = "EMPTY"
+    openai_api_base = "http://localhost:8000/v1"
+    client = OpenAI(
+        api_key=openai_api_key,
+        base_url=openai_api_base,
+    )
+
+    messages = [{"role": "user", "content": "What is your version?"}]
+
+    response = client.chat.completions.create(
+        model="Qwen/Qwen2.5-1.5B-Instruct",
+        messages=messages
+    )
+    response_content = response.choices[0].message.content
+    print(response_content)
+
+
 if __name__ == "__main__":
-    multiple_source_test()
+    vllm_api_test()
