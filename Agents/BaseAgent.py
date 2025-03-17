@@ -32,9 +32,23 @@ class BaseAgent:
         return predecessor_outputs
 
     def get_messages(self):
-        pass
+        raise Exception("Can NOT get_messages from a BaseAgent")
 
     def generate(self):
+        client = Together(api_key=os.environ.get("TOGETHER_API_KEY"))
+        response = client.chat.completions.create(
+            model=self.model_name,
+            messages=self.get_messages(),
+            temperature=self.temperature,
+        )
+        response_content = response.choices[0].message.content
+
+        if DEBUG:
+            logger.debug(f"{str(self)} get_messages:\n{response_content}")
+
+        return response_content
+    
+    def generate_together(self):
         client = Together(api_key=os.environ.get("TOGETHER_API_KEY"))
         response = client.chat.completions.create(
             model=self.model_name,

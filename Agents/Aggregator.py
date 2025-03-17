@@ -24,7 +24,7 @@ class Aggregator(BaseAgent):
         super().__init__(model_name, query, predecessors, temperature)
 
         if DEBUG:
-            logger.info(f"{str(self)} created")
+            logger.debug(f"{str(self)} created")
 
     def get_messages(self):
         predecessor_outputs = self.collect_predecessor_outputs()
@@ -44,7 +44,7 @@ class Aggregator(BaseAgent):
         ]
 
         if DEBUG:
-            logger.info(f"{str(self)} get_messages:\n{messages}")
+            logger.debug(f"{str(self)} get_messages:\n{messages}")
 
         return messages
 

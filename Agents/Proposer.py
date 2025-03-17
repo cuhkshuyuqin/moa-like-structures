@@ -20,13 +20,13 @@ class Proposer(BaseAgent):
         super().__init__(model_name, query, [], temperature)
 
         if DEBUG:
-            logger.info(f"{str(self)} created")
+            logger.debug(f"{str(self)} created")
 
     def get_messages(self):
         messages = [{"role": "user", "content": self.query}]
 
         if DEBUG:
-            logger.info(f"{str(self)} get_messages:\n{messages}")
+            logger.debug(f"{str(self)} get_messages:\n{messages}")
 
         return messages
 

@@ -1,3 +1,8 @@
-import os
+import toml
 
-DEBUG = int(os.environ.get("DEBUG", "0"))
+
+config = toml.load('config.toml')
+
+logging_config = config['logging']
+
+DEBUG = logging_config['debug']
