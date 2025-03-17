@@ -1,5 +1,7 @@
-from .BaseAgent import BaseAgent
 from loguru import logger
+
+from .BaseAgent import BaseAgent
+from utils import DEBUG
 
 
 class Proposer(BaseAgent):
@@ -16,11 +18,16 @@ class Proposer(BaseAgent):
             temperature (float)
         """
         super().__init__(model_name, query, [], temperature)
-        logger.info(f"{str(self)} created")
+
+        if DEBUG:
+            logger.info(f"{str(self)} created")
 
     def get_messages(self):
         messages = [{"role": "user", "content": self.query}]
-        logger.info(f"{str(self)} get_messages:\n{messages}")
+
+        if DEBUG:
+            logger.info(f"{str(self)} get_messages:\n{messages}")
+
         return messages
 
     def __repr__(self):

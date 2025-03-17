@@ -3,6 +3,8 @@ from together import Together
 import os
 from loguru import logger
 
+from utils import DEBUG
+
 
 class BaseAgent:
     """
@@ -39,8 +41,12 @@ class BaseAgent:
             messages=self.get_messages(),
             temperature=self.temperature,
         )
-        logger.info(f"{str(self)} get_messages:\n{response.choices[0].message.content}")
-        return response.choices[0].message.content
+        response_content = response.choices[0].message.content
+
+        if DEBUG:
+            logger.debug(f"{str(self)} get_messages:\n{response_content}")
+
+        return response_content
 
     def __repr__(self):
         return f"BaseAgent with name {self.model_name} and predecessors {self.predecessors}"

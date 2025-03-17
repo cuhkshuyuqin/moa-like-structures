@@ -1,5 +1,7 @@
-from .BaseAgent import BaseAgent
 from loguru import logger
+
+from .BaseAgent import BaseAgent
+from utils import DEBUG
 
 aggreagator_system_prompt = """You have been provided with a set of responses from various open-source models to the latest user query. Your task is to synthesize these responses into a single, high-quality response. It is crucial to critically evaluate the information provided in these responses, recognizing that some of it may be biased or incorrect. Your response should not simply replicate the given answers but should offer a refined, accurate, and comprehensive reply to the instruction. Ensure your response is well-structured, coherent, and adheres to the highest standards of accuracy and reliability.
 
@@ -20,7 +22,9 @@ class Aggregator(BaseAgent):
             temperature (float)
         """
         super().__init__(model_name, query, predecessors, temperature)
-        logger.info(f"{str(self)} created")
+
+        if DEBUG:
+            logger.info(f"{str(self)} created")
 
     def get_messages(self):
         predecessor_outputs = self.collect_predecessor_outputs()
@@ -38,7 +42,10 @@ class Aggregator(BaseAgent):
             },
             {"role": "user", "content": self.query},
         ]
-        logger.info(f"{str(self)} get_messages:\n{messages}")
+
+        if DEBUG:
+            logger.info(f"{str(self)} get_messages:\n{messages}")
+
         return messages
 
     def __repr__(self):
