@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "loguru>=0.7.3",
+    "openai>=1.66.3",
     "together>=1.4.6",
     "toml>=0.10.2",
 ]

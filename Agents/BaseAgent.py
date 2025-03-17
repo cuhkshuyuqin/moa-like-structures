@@ -2,6 +2,7 @@ from typing import List
 from together import Together
 import os
 from loguru import logger
+from openai import AzureOpenAI
 
 from utils import DEBUG, TOGETHER_MODELS, AZURE_MODELS
 
@@ -36,11 +37,11 @@ class BaseAgent:
 
     def generate(self):
         for model in TOGETHER_MODELS:
-            if model == model_name:
+            if model == self.model_name:
                 return self.generate_together()
-        
+
         for model in AZURE_MODELS:
-            if model == model_name:
+            if model == self.model_name:
                 return self.generate_azure()
 
     def generate_together(self):
@@ -56,14 +57,14 @@ class BaseAgent:
             logger.debug(f"{str(self)} generate_together:\n{response_content}")
 
         return response_content
-    
+
     def generate_azure(self):
         llm = AzureOpenAI(
             api_key=os.getenv("AZURE_API_KEY"),
-            api_version=self.model_name.split('/')[1],
-            azure_endpoint=os.getenv("AZURE_ENDPOINT")
+            api_version=self.model_name.split("/")[1],
+            azure_endpoint=os.getenv("AZURE_ENDPOINT"),
         )
-        azure_model_name=os.getenv("AZURE_MODEL_NAME")
+        azure_model_name = os.getenv("AZURE_MODEL_NAME")
 
         response = llm.chat.completions.create(
             model=azure_model_name,
