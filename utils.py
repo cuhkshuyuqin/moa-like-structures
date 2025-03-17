@@ -8,4 +8,4 @@ inference_config = config["inference"]
 DEBUG = logging_config["debug"]
 
 TOGETHER_MODELS = inference_config["together"]
-OPENAI_MODELS = inference_config["openai"]
+AZURE_MODELS = inference_config["azure"]

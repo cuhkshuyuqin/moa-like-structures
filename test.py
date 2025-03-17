@@ -1,6 +1,6 @@
 from Agents.Proposer import Proposer
 from Agents.Aggregator import Aggregator
-from utils import TOGETHER_MODELS, OPENAI_MODELS
+from utils import TOGETHER_MODELS, AZURE_MODELS
 
 
 def basic_moa_test():
@@ -19,7 +19,7 @@ def basic_moa_test():
 
 def inference_config_test():
     print(TOGETHER_MODELS)
-    print(OPENAI_MODELS)
+    print(AZURE_MODELS)
 
 
 inference_config_test()
