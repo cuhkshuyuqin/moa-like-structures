@@ -144,5 +144,80 @@ def moa_structure_1_test():
     print(aggregator4.generate())
 
 
+def moa_structure_2_test():
+    query = "What are 3 fun things to do in SF?"
+
+    proposer1 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+    proposer2 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+    proposer3 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+    proposer4 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+
+    aggregator1 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [proposer1, proposer2, proposer3, proposer4]
+    )
+
+    proposer5 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+    proposer6 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+
+    aggregator2 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [aggregator1, proposer5, proposer6]
+    )
+
+    print(aggregator2.generate())
+
+
+def moa_structure_3_test():
+    query = "What are 3 fun things to do in SF?"
+
+    proposer1 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+    proposer2 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+    proposer3 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+
+    aggregator1 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [proposer1, proposer2, proposer3]
+    )
+
+    proposer4 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+    proposer5 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+    proposer6 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+
+    aggregator2 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [proposer4, proposer5, proposer6]
+    )
+
+    aggregator3 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [aggregator1, aggregator2]
+    )
+
+    print(aggregator3.generate())
+
+
+def moa_structure_4_test():
+    query = "What are 3 fun things to do in SF?"
+
+    proposer1 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+    proposer2 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
+
+    aggregator1 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [proposer1, proposer2]
+    )
+    aggregator2 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [proposer1, proposer2]
+    )
+
+    aggregator3 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [aggregator1, aggregator2]
+    )
+    aggregator4 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [aggregator1, aggregator2]
+    )
+
+    aggregator5 = Aggregator(
+        "Qwen/Qwen2.5-1.5B-Instruct", query, [aggregator3, aggregator4]
+    )
+
+    print(aggregator5.generate())
+
+
 if __name__ == "__main__":
-    moa_structure_1_test()
+    moa_structure_4_test()
