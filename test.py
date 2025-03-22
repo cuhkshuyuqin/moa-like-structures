@@ -219,5 +219,48 @@ def moa_structure_4_test():
     print(aggregator5.generate())
 
 
+def qwen2_7b_instruct_test():
+    query = "What are 3 fun things to do in SF?"
+
+    proposer1 = Proposer("Alibaba-NLP/gte-Qwen2-7B-instruct", query)
+    proposer2 = Proposer("Alibaba-NLP/gte-Qwen2-7B-instruct", query)
+
+    aggregator = Aggregator(
+        "Alibaba-NLP/gte-Qwen2-7B-instruct", query, [proposer1, proposer2]
+    )
+
+    print(aggregator.generate())
+
+
+def local_api_test():
+    HOST = "localhost"
+    PORT = "18006"
+    MODEL = "Alibaba-NLP/gte-Qwen2-7B-instruct"
+
+
+    openai_api_key = "EMPTY"
+    openai_api_base = f"http://{HOST}:{PORT}/v1"
+
+    client = OpenAI(
+        api_key=openai_api_key,
+        base_url=openai_api_base,
+    )
+
+    chat_response = client.chat.completions.create(
+        model=MODEL,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "Tell me a joke."},
+        ],
+        stream=True
+    )
+
+    for chunk in chat_response:
+        content = chunk.choices[0].delta.content
+        if content is not None:
+            sys.stdout.write(content)
+            sys.stdout.flush()
+
+
 if __name__ == "__main__":
-    moa_structure_4_test()
+    local_api_test()
