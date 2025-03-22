@@ -1,6 +1,7 @@
 from openai import AzureOpenAI, OpenAI
 import os
 from vllm import LLM, SamplingParams
+import sys
 
 from Agents.Proposer import Proposer
 from Agents.Aggregator import Aggregator
@@ -234,8 +235,8 @@ def qwen2_7b_instruct_test():
 
 def local_api_test():
     HOST = "localhost"
-    PORT = "18006"
-    MODEL = "Alibaba-NLP/gte-Qwen2-7B-instruct"
+    PORT = "18004"
+    MODEL = "Qwen/Qwen1.5-72B-Chat"
 
 
     openai_api_key = "EMPTY"
