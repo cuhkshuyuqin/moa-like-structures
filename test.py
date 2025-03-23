@@ -235,8 +235,8 @@ def qwen2_7b_instruct_test():
 
 def local_api_test():
     HOST = "localhost"
-    PORT = "18004"
-    MODEL = "Qwen/Qwen1.5-72B-Chat"
+    PORT = "18007"
+    MODEL = "Qwen/QwQ-32B"
 
 
     openai_api_key = "EMPTY"
