@@ -11,11 +11,11 @@ from utils import (
 
 # MODEL_NAME = "meta-llama/Llama-3.1-8B-Instruct"
 # MODEL_NAME = "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct"
-MODEL_NAME = "Qwen/Qwen2-Math-7B-Instruct"
+# MODEL_NAME = "Qwen/Qwen2-Math-7B-Instruct"
 
 # MODEL_NAME = "Alibaba-NLP/gte-Qwen2-7B-instruct"
 
-# MODEL_NAME = "Qwen/QwQ-32B"
+MODEL_NAME = "Qwen/QwQ-32B"
 
 # MODEL_NAME = "alpindale/WizardLM-2-8x22B"
 # MODEL_NAME = "Qwen/Qwen1.5-72B-Chat"
@@ -30,7 +30,7 @@ port = VLLM_PORTS[MODEL_NAME]
 huggingface_token = os.getenv("HF_TOKEN")
 
 instruction_login = f"uv run huggingface-cli login --token {huggingface_token}"
-instruction_serve = f"uv run vllm serve {MODEL_NAME} --port {port} --trust-remote-code"
+instruction_serve = f"uv run vllm serve {MODEL_NAME} --port {port} --trust-remote-code --gpu-memory-utilization 1"
 if MAX_MODEL_LEN is not None:
     instruction_serve += f" --max-model-len {MAX_MODEL_LEN}"
 
