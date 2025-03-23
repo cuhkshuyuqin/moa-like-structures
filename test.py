@@ -261,7 +261,22 @@ def local_api_test():
         if content is not None:
             sys.stdout.write(content)
             sys.stdout.flush()
+    
+
+def model_availability_test():
+    MODEL = "Qwen/Qwen2-Math-7B-Instruct"
+
+    query = "What are 3 fun things to do in SF?"
+
+    proposer1 = Proposer(MODEL, query)
+    proposer2 = Proposer(MODEL, query)
+
+    aggregator = Aggregator(
+        MODEL, query, [proposer1, proposer2]
+    )
+
+    print(aggregator.generate())
 
 
 if __name__ == "__main__":
-    local_api_test()
+    model_availability_test()
