@@ -11,11 +11,12 @@ from utils import (
 
 # MODEL_NAME = "meta-llama/Llama-3.1-8B-Instruct"
 # MODEL_NAME = "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct"
+MODEL_NAME = "Qwen/Qwen2-7B-Instruct"
 # MODEL_NAME = "Qwen/Qwen2-Math-7B-Instruct"
 
 # MODEL_NAME = "Alibaba-NLP/gte-Qwen2-7B-instruct"
 
-MODEL_NAME = "Qwen/QwQ-32B"
+# MODEL_NAME = "Qwen/QwQ-32B"
 
 # MODEL_NAME = "alpindale/WizardLM-2-8x22B"
 # MODEL_NAME = "Qwen/Qwen1.5-72B-Chat"

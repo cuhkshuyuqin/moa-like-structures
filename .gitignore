@@ -8,3 +8,10 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Deepeval
+.deepeval_telemetry.txt
+
+# Logs
+logs/
+results/
