@@ -1,8 +1,10 @@
+from deepeval.models import DeepEvalBaseLLM
+
 from model_structures import *
 from utils import START_TIME
 
 SETTINGS_INFO = "Simple Qwen/Qwen2-7B-Instruct"
-MODEL_STRUCTURE = structure_1
+MODEL_STRUCTURE = structure_2
 
 
 class CustomTestModel(DeepEvalBaseLLM):
