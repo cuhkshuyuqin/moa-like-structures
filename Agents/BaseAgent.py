@@ -98,7 +98,9 @@ class BaseAgent:
 
     def generate_vllm(self):
         api_key = "EMPTY"
-        base_url = f"http://{VLLM_HOSTS[self.model_name]}:{VLLM_PORTS[self.model_name]}/v1"
+        base_url = (
+            f"http://{VLLM_HOSTS[self.model_name]}:{VLLM_PORTS[self.model_name]}/v1"
+        )
 
         if DEBUG:
             logger.debug(f"vLLM Client URL: {base_url}")
@@ -106,7 +108,7 @@ class BaseAgent:
         client = OpenAI(
             api_key=api_key,
             base_url=base_url,
-        )        
+        )
 
         response = client.chat.completions.create(
             model=self.model_name,

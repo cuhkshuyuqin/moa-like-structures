@@ -154,7 +154,9 @@ def moa_structure_2_test():
     proposer4 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
 
     aggregator1 = Aggregator(
-        "Qwen/Qwen2.5-1.5B-Instruct", query, [proposer1, proposer2, proposer3, proposer4]
+        "Qwen/Qwen2.5-1.5B-Instruct",
+        query,
+        [proposer1, proposer2, proposer3, proposer4],
     )
 
     proposer5 = Proposer("Qwen/Qwen2.5-1.5B-Instruct", query)
@@ -238,7 +240,6 @@ def local_api_test():
     PORT = "18007"
     MODEL = "Qwen/QwQ-32B"
 
-
     openai_api_key = "EMPTY"
     openai_api_base = f"http://{HOST}:{PORT}/v1"
 
@@ -253,7 +254,7 @@ def local_api_test():
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": "Tell me a joke."},
         ],
-        stream=True
+        stream=True,
     )
 
     for chunk in chat_response:
@@ -261,7 +262,7 @@ def local_api_test():
         if content is not None:
             sys.stdout.write(content)
             sys.stdout.flush()
-    
+
 
 def model_availability_test():
     MODEL = "Qwen/Qwen2-Math-7B-Instruct"
@@ -271,9 +272,7 @@ def model_availability_test():
     proposer1 = Proposer(MODEL, query)
     proposer2 = Proposer(MODEL, query)
 
-    aggregator = Aggregator(
-        MODEL, query, [proposer1, proposer2]
-    )
+    aggregator = Aggregator(MODEL, query, [proposer1, proposer2])
 
     print(aggregator.generate())
 
