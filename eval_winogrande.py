@@ -10,15 +10,18 @@ custom_test_model = CustomTestModel()
 
 benchmark.evaluate(model=custom_test_model)
 
+current_results_dir = os.path.join(RESULTS_DIR, "winogrande")
+os.makedirs(current_results_dir, exist_ok=True)
+
 benchmark.predictions.to_csv(
-    os.path.join("results", "winogrande", f"{START_TIME}_winogrande.csv")
+    os.path.join(current_results_dir, f"{START_TIME}_predictions.csv")
 )
 benchmark.task_scores.to_csv(
-    os.path.join("results", "winogrande", f"{START_TIME}_task_scores.csv")
+    os.path.join(current_results_dir, f"{START_TIME}_task_scores.csv")
 )
 with open(
-    os.path.join("results", "winogrande", f"{START_TIME}_overall_score.txt"), "w"
+    os.path.join(current_results_dir, f"{START_TIME}_overall_score.txt"), "w"
 ) as file:
     file.write(str(benchmark.overall_score))
-with open(os.path.join("logs", f"{START_TIME}_settings.txt"), "w") as file:
+with open(os.path.join(LOG_DIR, f"{START_TIME}_settings.txt"), "w") as file:
     file.write(SETTINGS_INFO)
