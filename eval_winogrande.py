@@ -1,7 +1,7 @@
 from deepeval.benchmarks import Winogrande
 import os
 
-from CustomTestModel import CustomTestModel
+from CustomTestModel import CustomTestModel, SETTINGS_INFO
 
 benchmark = Winogrande()
 custom_test_model = CustomTestModel()

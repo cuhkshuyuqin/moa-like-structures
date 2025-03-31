@@ -1,7 +1,7 @@
 from deepeval.benchmarks import GSM8K
 import os
 
-from CustomTestModel import CustomTestModel
+from CustomTestModel import CustomTestModel, SETTINGS_INFO
 from utils import LOG_DIR, RESULTS_DIR
 
 

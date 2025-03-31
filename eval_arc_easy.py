@@ -2,7 +2,7 @@ from deepeval.benchmarks import ARC
 from deepeval.benchmarks.modes import ARCMode
 import os
 
-from CustomTestModel import CustomTestModel
+from CustomTestModel import CustomTestModel, SETTINGS_INFO
 from utils import LOG_DIR, RESULTS_DIR
 
 
