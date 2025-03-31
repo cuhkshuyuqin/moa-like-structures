@@ -10,7 +10,7 @@ custom_test_model = CustomTestModel()
 
 benchmark.evaluate(model=custom_test_model)
 
-current_results_dir = os.path.join(RESULTS_DIR, "arc_challenge")
+current_results_dir = os.path.join(RESULTS_DIR, "arc_gsm8k")
 os.makedirs(current_results_dir, exist_ok=True)
 
 benchmark.predictions.to_csv(

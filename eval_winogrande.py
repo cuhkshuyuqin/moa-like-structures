@@ -9,7 +9,7 @@ custom_test_model = CustomTestModel()
 benchmark.evaluate(model=custom_test_model)
 
 benchmark.predictions.to_csv(
-    os.path.join("results", "winogrande", f"{START_TIME}_predictions.csv")
+    os.path.join("results", "winogrande", f"{START_TIME}_winogrande.csv")
 )
 benchmark.task_scores.to_csv(
     os.path.join("results", "winogrande", f"{START_TIME}_task_scores.csv")
