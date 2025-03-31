@@ -2,6 +2,8 @@ from deepeval.benchmarks import Winogrande
 import os
 
 from CustomTestModel import CustomTestModel, SETTINGS_INFO
+from utils import LOG_DIR, RESULTS_DIR, START_TIME
+
 
 benchmark = Winogrande()
 custom_test_model = CustomTestModel()

@@ -2,7 +2,7 @@ from deepeval.benchmarks import MMLU
 import os
 
 from CustomTestModel import CustomTestModel, SETTINGS_INFO
-from utils import LOG_DIR, RESULTS_DIR
+from utils import LOG_DIR, RESULTS_DIR, START_TIME
 
 
 benchmark = MMLU()

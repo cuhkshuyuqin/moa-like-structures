@@ -1,10 +1,16 @@
 from deepeval.models import DeepEvalBaseLLM
 
 from model_structures import *
-from utils import START_TIME
 
-SETTINGS_INFO = "Simple Qwen/Qwen2-7B-Instruct"
-MODEL_STRUCTURE = structure_2
+SETTINGS_INFO = """
+def structure_1(query):
+    model = "Qwen/Qwen2-7B-Instruct"
+
+    proposer = Proposer(model, query)
+
+    return proposer.generate()
+"""
+MODEL_STRUCTURE = structure_1
 
 
 class CustomTestModel(DeepEvalBaseLLM):
