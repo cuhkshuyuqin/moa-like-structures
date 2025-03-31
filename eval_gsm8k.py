@@ -16,9 +16,6 @@ os.makedirs(current_results_dir, exist_ok=True)
 benchmark.predictions.to_csv(
     os.path.join(current_results_dir, f"{START_TIME}_predictions.csv")
 )
-benchmark.task_scores.to_csv(
-    os.path.join(current_results_dir, f"{START_TIME}_task_scores.csv")
-)
 with open(
     os.path.join(current_results_dir, f"{START_TIME}_overall_score.txt"), "w"
 ) as file:
