@@ -23,5 +23,5 @@ with open(
     os.path.join(current_results_dir, f"{START_TIME}_overall_score.txt"), "w"
 ) as file:
     file.write(str(benchmark.overall_score))
-with open(os.path.join(LOG_DIR, f"{START_TIME}_settings.txt"), "w") as file:
+with open(os.path.join(current_results_dir, f"{START_TIME}_settings.txt"), "w") as file:
     file.write(SETTINGS_INFO)
