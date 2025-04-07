@@ -20,16 +20,20 @@ MODEL_STRUCTURE = structure_self_moa_sota
 
 class CustomTestModel(DeepEvalBaseLLM):
     def __init__(self):
-        pass
+        self.token_costs = "EMPTY"
 
     def load_model(self):
         pass
 
     def generate(self, prompt: str) -> str:
-        return MODEL_STRUCTURE(prompt)
+        result, self.token_costs = MODEL_STRUCTURE(prompt)
+        return result
 
     async def a_generate(self, prompt: str) -> str:
         return self.generate(prompt)
 
     def get_model_name(self):
         return "CustomTestModel"
+
+    def get_token_costs(self):
+        return self.token_costs

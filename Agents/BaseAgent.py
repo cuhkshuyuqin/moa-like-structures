@@ -3,6 +3,7 @@ from together import Together
 import os
 from loguru import logger
 from openai import AzureOpenAI, OpenAI
+from transformers import AutoTokenizer
 
 from utils import (
     DEBUG,
@@ -32,6 +33,8 @@ class BaseAgent:
         self.predecessors: List[BaseAgent] = predecessors
         self.temperature = temperature
         self.response = None
+        self.total_input_tokens = 0
+        self.total_output_tokens = 0
 
     def collect_predecessor_outputs(self):
         predecessor_outputs = []
@@ -63,13 +66,17 @@ class BaseAgent:
                 return self.response
 
     def generate_together(self):
+        messages = self.get_messages()
+        self.analyze_input_tokens(messages)
+
         client = Together(api_key=os.environ.get("TOGETHER_API_KEY"))
         response = client.chat.completions.create(
             model=self.model_name,
-            messages=self.get_messages(),
+            messages=messages,
             temperature=self.temperature,
         )
         response_content = response.choices[0].message.content
+        self.analyze_output_tokens(response_content)
 
         if DEBUG:
             logger.debug(f"{str(self)} generate_together:\n{response_content}")
@@ -97,6 +104,9 @@ class BaseAgent:
         return response_content
 
     def generate_vllm(self):
+        messages = self.get_messages()
+        self.analyze_input_tokens(messages)
+
         api_key = "EMPTY"
         base_url = (
             f"http://{VLLM_HOSTS[self.model_name]}:{VLLM_PORTS[self.model_name]}/v1"
@@ -113,14 +123,36 @@ class BaseAgent:
         response = client.chat.completions.create(
             model=self.model_name,
             temperature=self.temperature,
-            messages=self.get_messages(),
+            messages=messages,
         )
         response_content = response.choices[0].message.content
+        self.analyze_output_tokens(response_content)
 
         if DEBUG:
             logger.debug(f"{str(self)} generate_vllm:\n{response_content}")
 
         return response_content
+
+    def analyze_input_tokens(self, messages):
+        for item in messages:
+            tokenizer = AutoTokenizer.from_pretrained(self.name)
+            tokens = tokenizer(item["content"], return_tensors='pt')
+            token_count = tokens['input_ids'].shape[1]
+
+            self.total_input_tokens += token_count
+    
+    def analyze_output_tokens(self, output):
+        tokenizer = AutoTokenizer.from_pretrained(self.name)
+        tokens = tokenizer(output, return_tensors='pt')
+        token_count = tokens['input_ids'].shape[1]
+
+        self.total_output_tokens += token_count
+    
+    def get_total_input_tokens(self):
+        return total_input_tokens
+
+    def get_total_output_tokens(self):
+        return total_output_tokens
 
     def __repr__(self):
         return f"BaseAgent with name {self.model_name} and predecessors {self.predecessors}"

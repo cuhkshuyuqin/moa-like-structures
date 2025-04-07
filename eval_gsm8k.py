@@ -16,9 +16,14 @@ os.makedirs(current_results_dir, exist_ok=True)
 benchmark.predictions.to_csv(
     os.path.join(current_results_dir, f"{START_TIME}_predictions.csv")
 )
+
 with open(
     os.path.join(current_results_dir, f"{START_TIME}_overall_score.txt"), "w"
 ) as file:
     file.write(str(benchmark.overall_score))
+
 with open(os.path.join(current_results_dir, f"{START_TIME}_settings.txt"), "w") as file:
     file.write(SETTINGS_INFO)
+
+with open(os.path.join(current_results_dir, f"{START_TIME}_token_costs.txt"), "w") as file:
+    file.write(custom_test_model.get_token_costs())
