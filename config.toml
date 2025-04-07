@@ -23,6 +23,7 @@ vllm = [
     "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
     "Qwen/Qwen2-Math-7B-Instruct",
     "Qwen/Qwen2-7B-Instruct",
+    "wzhouad/gemma-2-9b-it-WPO-HB",
 ]
 
 [inference.vllm_hosts]
@@ -37,6 +38,7 @@ vllm = [
 "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct" = "localhost"
 "Qwen/Qwen2-Math-7B-Instruct" = "localhost"
 "Qwen/Qwen2-7B-Instruct" = "localhost"
+"wzhouad/gemma-2-9b-it-WPO-HB" = "localhost"
 
 [inference.vllm_ports]
 "Qwen/Qwen2.5-1.5B-Instruct" = 18000
@@ -50,3 +52,4 @@ vllm = [
 "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct" = 18008
 "Qwen/Qwen2-Math-7B-Instruct" = 18009
 "Qwen/Qwen2-7B-Instruct" = 18010
+"wzhouad/gemma-2-9b-it-WPO-HB" = 18011

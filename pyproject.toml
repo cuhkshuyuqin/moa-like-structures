@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "alpaca-eval>=0.6.6",
     "datasets>=3.4.1",
     "deepeval>=2.6.4",
     "huggingface-hub[cli]>=0.29.3",
@@ -12,6 +13,7 @@ dependencies = [
     "openai>=1.66.3",
     "together>=1.4.6",
     "toml>=0.10.2",
+    "tqdm>=4.67.1",
     "transformers>=4.49.0",
     "vllm>=0.7.3",
 ]

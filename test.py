@@ -277,5 +277,25 @@ def model_availability_test():
     print(aggregator.generate())
 
 
+def azure_single_test():
+    MODEL = "azure"
+
+    query = "What are 3 fun things to do in SF?"
+
+    model = Proposer(MODEL, query)
+
+    print(model.generate())
+
+
+def gemma_2_9b_it_wpo_hb_test():
+    MODEL = "wzhouad/gemma-2-9b-it-WPO-HB"
+
+    query = "What are 3 fun things to do in SF?"
+
+    model = Proposer(MODEL, query)
+
+    print(model.generate())
+
+
 if __name__ == "__main__":
-    model_availability_test()
+    gemma_2_9b_it_wpo_hb_test()
