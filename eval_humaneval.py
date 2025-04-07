@@ -8,7 +8,7 @@ from utils import LOG_DIR, RESULTS_DIR, START_TIME
 benchmark = HumanEval()
 custom_test_model = CustomTestModel()
 
-benchmark.evaluate(model=custom_test_model)
+benchmark.evaluate(model=custom_test_model, k=10)
 
 current_results_dir = os.path.join(RESULTS_DIR, "humaneval")
 os.makedirs(current_results_dir, exist_ok=True)

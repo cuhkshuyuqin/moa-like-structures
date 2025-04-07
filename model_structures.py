@@ -10,9 +10,9 @@ def get_token_costs(agents: Dict[str, BaseAgent]):
     total_input_tokens_count = 0
     total_output_tokens_count = 0
     for name, instance in agents.items():
-        token_costs += f"{name}:\ninput:  {instance.get_total_input_tokens}\noutput: {instance.get_total_input_tokens}\n\n"
-        total_input_tokens_count += instance.get_total_input_tokens
-        total_output_tokens_count += instance.get_total_output_tokens
+        token_costs += f"{name}:\ninput:  {instance.get_total_input_tokens()}\noutput: {instance.get_total_input_tokens()}\n\n"
+        total_input_tokens_count += instance.get_total_input_tokens()
+        total_output_tokens_count += instance.get_total_output_tokens()
     
     token_costs += f"total:\ninput:  {total_input_tokens_count}\noutput: {total_output_tokens_count}\ntotal:  {total_input_tokens_count + total_output_tokens_count}"
 
@@ -139,7 +139,7 @@ def structure_self_moa_sota(query):
 
 
 def structure_token_cost_1(query):
-    model = "Qwen/Qwen2-7B-Instruct"
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
 
     layer0_1 = Proposer(model, query)
     layer0_2 = Proposer(model, query)

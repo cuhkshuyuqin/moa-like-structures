@@ -24,6 +24,8 @@ vllm = [
     "Qwen/Qwen2-Math-7B-Instruct",
     "Qwen/Qwen2-7B-Instruct",
     "wzhouad/gemma-2-9b-it-WPO-HB",
+    "Qwen/Qwen2.5-0.5B",
+    "Qwen/Qwen2.5-0.5B-Instruct",
 ]
 
 [inference.vllm_hosts]
@@ -39,6 +41,8 @@ vllm = [
 "Qwen/Qwen2-Math-7B-Instruct" = "localhost"
 "Qwen/Qwen2-7B-Instruct" = "localhost"
 "wzhouad/gemma-2-9b-it-WPO-HB" = "localhost"
+"Qwen/Qwen2.5-0.5B" = "localhost"
+"Qwen/Qwen2.5-0.5B-Instruct" = "localhost"
 
 [inference.vllm_ports]
 "Qwen/Qwen2.5-1.5B-Instruct" = 18000
@@ -53,3 +57,5 @@ vllm = [
 "Qwen/Qwen2-Math-7B-Instruct" = 18009
 "Qwen/Qwen2-7B-Instruct" = 18010
 "wzhouad/gemma-2-9b-it-WPO-HB" = 18011
+"Qwen/Qwen2.5-0.5B" = 18012
+"Qwen/Qwen2.5-0.5B-Instruct" = 18013

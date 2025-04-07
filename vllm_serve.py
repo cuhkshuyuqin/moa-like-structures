@@ -21,7 +21,10 @@ from utils import (
 # MODEL_NAME = "alpindale/WizardLM-2-8x22B"
 # MODEL_NAME = "Qwen/Qwen1.5-72B-Chat"
 
-MODEL_NAME = "wzhouad/gemma-2-9b-it-WPO-HB"
+# MODEL_NAME = "wzhouad/gemma-2-9b-it-WPO-HB"
+
+# MODEL_NAME = "Qwen/Qwen2.5-0.5B"
+MODEL_NAME = "Qwen/Qwen2.5-0.5B-Instruct"
 
 MAX_MODEL_LEN = None
 # MAX_MODEL_LEN = 16384

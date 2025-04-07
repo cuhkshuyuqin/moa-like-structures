@@ -135,24 +135,24 @@ class BaseAgent:
 
     def analyze_input_tokens(self, messages):
         for item in messages:
-            tokenizer = AutoTokenizer.from_pretrained(self.name)
+            tokenizer = AutoTokenizer.from_pretrained(self.model_name)
             tokens = tokenizer(item["content"], return_tensors='pt')
             token_count = tokens['input_ids'].shape[1]
 
             self.total_input_tokens += token_count
     
     def analyze_output_tokens(self, output):
-        tokenizer = AutoTokenizer.from_pretrained(self.name)
+        tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         tokens = tokenizer(output, return_tensors='pt')
         token_count = tokens['input_ids'].shape[1]
 
         self.total_output_tokens += token_count
     
     def get_total_input_tokens(self):
-        return total_input_tokens
+        return self.total_input_tokens
 
     def get_total_output_tokens(self):
-        return total_output_tokens
+        return self.total_output_tokens
 
     def __repr__(self):
         return f"BaseAgent with name {self.model_name} and predecessors {self.predecessors}"

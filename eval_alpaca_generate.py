@@ -8,7 +8,7 @@ import json
 from CustomTestModel import CustomTestModel, SETTINGS_INFO
 from utils import LOG_DIR, RESULTS_DIR, START_TIME
 
-JUMP = 140
+JUMP = 0
 TRYING_TIMES = 5
 
 custom_test_model = CustomTestModel()
@@ -29,6 +29,7 @@ try:
                 new_eval["output"] = custom_test_model.generate(example["instruction"])
                 new_eval["generator"] = custom_test_model.get_model_name()
             except Exception as e:
+                traceback.print_exc()
                 continue
             break
 
@@ -45,3 +46,6 @@ with open(os.path.join(current_results_dir, f"{START_TIME}_settings.txt"), "w") 
 
 with open(os.path.join(current_results_dir, f"{START_TIME}_output.json"), "w", encoding="utf-8") as json_file:
     json.dump(eval_set_evaluated, json_file, ensure_ascii=False, indent=4)
+
+with open(os.path.join(current_results_dir, f"{START_TIME}_token_costs.txt"), "w") as file:
+    file.write(custom_test_model.get_token_costs())
