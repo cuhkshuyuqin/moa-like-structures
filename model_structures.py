@@ -1,20 +1,8 @@
-from typing import Dict
+from typing import Dict, List
 
 from Agents.Proposer import Proposer
 from Agents.Aggregator import Aggregator
 from Agents.BaseAgent import BaseAgent
-
-
-def get_token_costs(agents: Dict[str, BaseAgent]):
-    token_costs = ""
-    total_input_tokens_count = 0
-    total_output_tokens_count = 0
-    for name, instance in agents.items():
-        token_costs += f"{name}:\ninput:  {instance.get_total_input_tokens()}\noutput: {instance.get_total_input_tokens()}\n\n"
-        total_input_tokens_count += instance.get_total_input_tokens()
-        total_output_tokens_count += instance.get_total_output_tokens()
-    
-    token_costs += f"total:\ninput:  {total_input_tokens_count}\noutput: {total_output_tokens_count}\ntotal:  {total_input_tokens_count + total_output_tokens_count}"
 
 
 def structure_0(query):
@@ -138,6 +126,20 @@ def structure_self_moa_sota(query):
     return layer1_1.generate()
 
 
+def structure_token_cost_0(query):
+    model = "Qwen/Qwen2.5-1.5B-Instruct"
+
+    only_model = Proposer(model, query)
+
+    result = only_model.generate()
+
+    token_costs = get_token_costs({
+        "only_model": only_model
+    })
+
+    return result, token_costs
+
+
 def structure_token_cost_1(query):
     model = "Qwen/Qwen2.5-0.5B-Instruct"
 
@@ -150,6 +152,8 @@ def structure_token_cost_1(query):
 
     layer1_1 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3, layer0_4, layer0_5, layer0_6])
 
+    result = layer1_1.generate()
+
     token_costs = get_token_costs({
         "layer0_1": layer0_1,
         "layer0_2": layer0_2,
@@ -160,4 +164,63 @@ def structure_token_cost_1(query):
         "layer1_1": layer1_1,
     })
 
-    return layer1_1.generate(), token_costs
+    return result, token_costs
+
+
+def structure_token_cost_2(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Aggregator(model, query, [layer0_1])
+    layer2_1 = Aggregator(model, query, [layer1_1])
+    layer3_1 = Aggregator(model, query, [layer2_1])
+    layer4_1 = Aggregator(model, query, [layer3_1])
+    layer5_1 = Aggregator(model, query, [layer4_1])
+    layer6_1 = Aggregator(model, query, [layer5_1])
+
+    result = layer6_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+        "layer5_1": layer5_1,
+        "layer6_1": layer6_1,
+    }
+
+    return result, token_costs
+
+
+def structure_complete_tree(query, branch, depth):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    if branch < 1:
+        raise Exception("Invalid branch")
+    if depth < 1:
+        raise Exception("Invalid branch")
+
+    complete_tree = structure_complete_tree_generate(model, query, branch, depth)
+
+    return complete_tree.generate()
+
+def structure_complete_tree_generate(model, query, branch, depth):
+    if depth == 1:
+        return Proposer(model, query)
+    
+    return Aggregator(model, query, [structure_complete_tree_generate(model, query, branch, depth - 1)] * branch)
+
+def structure_fully_connected(query, shape: List[int]):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    neurons = [[Proposer(model, query) for i in shape[0]]]
+    for i in range(1, len(shape)):
+        neurons.append([Aggregator(model, query, neurons[i]) for j in shape[i]])
+
+    final_aggregator = Aggregator(model, query, neurons[len(shape) - 1])
+
+    return final_aggregator.generate()
+
+def structure_rectangle(query, depth, length):
+    return structure_fully_connected(query, [length] * depth)

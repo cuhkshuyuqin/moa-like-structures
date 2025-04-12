@@ -3,42 +3,45 @@ from deepeval.models import DeepEvalBaseLLM
 from model_structures import *
 
 SETTINGS_INFO = """
-def structure_token_cost_1(query):
+def structure_token_cost_2(query):
     model = "Qwen/Qwen2.5-0.5B-Instruct"
 
     layer0_1 = Proposer(model, query)
-    layer0_2 = Proposer(model, query)
-    layer0_3 = Proposer(model, query)
-    layer0_4 = Proposer(model, query)
-    layer0_5 = Proposer(model, query)
-    layer0_6 = Proposer(model, query)
+    layer1_1 = Aggregator(model, query, [layer0_1])
+    layer2_1 = Aggregator(model, query, [layer1_1])
+    layer3_1 = Aggregator(model, query, [layer2_1])
+    layer4_1 = Aggregator(model, query, [layer3_1])
+    layer5_1 = Aggregator(model, query, [layer4_1])
+    layer6_1 = Aggregator(model, query, [layer5_1])
 
-    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3, layer0_4, layer0_5, layer0_6])
+    result = layer6_1.generate()
 
-    token_costs = get_token_costs({
+    token_costs = {
         "layer0_1": layer0_1,
-        "layer0_2": layer0_2,
-        "layer0_3": layer0_3,
-        "layer0_4": layer0_4,
-        "layer0_5": layer0_5,
-        "layer0_6": layer0_6,
         "layer1_1": layer1_1,
-    })
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+        "layer5_1": layer5_1,
+        "layer6_1": layer6_1,
+    }
 
-    return layer1_1.generate(), token_costs
+    return result, token_costs
 """
-MODEL_STRUCTURE = structure_token_cost_1
+MODEL_STRUCTURE = structure_token_cost_2
 
 
 class CustomTestModel(DeepEvalBaseLLM):
     def __init__(self):
-        self.token_costs = "EMPTY"
+        self.token_costs_input = None
+        self.token_costs_output = None
 
     def load_model(self):
         pass
 
     def generate(self, prompt: str) -> str:
-        result, self.token_costs = MODEL_STRUCTURE(prompt)
+        result, token_costs = MODEL_STRUCTURE(prompt)
+        self.sum_token_costs(token_costs)
         return result
 
     async def a_generate(self, prompt: str) -> str:
@@ -48,4 +51,26 @@ class CustomTestModel(DeepEvalBaseLLM):
         return "CustomTestModel"
 
     def get_token_costs(self):
-        return self.token_costs
+        token_costs = ""
+        total_input_tokens_count = 0
+        total_output_tokens_count = 0
+        for name, instance in self.token_costs_input.items():
+            token_costs += f"{name}:\ninput:  {self.token_costs_input[name]}\noutput: {self.token_costs_output[name]}\ntotal:  {self.token_costs_input[name] + self.token_costs_output[name]}\n\n"
+            total_input_tokens_count += self.token_costs_input[name]
+            total_output_tokens_count += self.token_costs_output[name]
+        
+        token_costs += f"sum:\ninput:  {total_input_tokens_count}\noutput: {total_output_tokens_count}\ntotal:  {total_input_tokens_count + total_output_tokens_count}"
+
+        return token_costs
+
+    def sum_token_costs(self, token_costs):
+        if self.token_costs_input is None:
+            self.token_costs_input = {}
+            self.token_costs_output = {}
+            for name, instance in token_costs.items():
+                self.token_costs_input[name] = instance.get_total_input_tokens()
+                self.token_costs_output[name] = instance.get_total_output_tokens()
+        else:
+            for name, instance in token_costs.items():
+                self.token_costs_input[name] += instance.get_total_input_tokens()
+                self.token_costs_output[name] += instance.get_total_output_tokens()
