@@ -32,6 +32,8 @@ try:
                 traceback.print_exc()
                 continue
             break
+        
+        # break # if only process 1 test case
 
         eval_set_evaluated.append(new_eval)
 
