@@ -25,6 +25,8 @@ from utils import (
 
 # MODEL_NAME = "Qwen/Qwen2.5-0.5B"
 MODEL_NAME = "Qwen/Qwen2.5-0.5B-Instruct"
+# MODEL_NAME = "Qwen/Qwen1.5-0.5B-Chat"
+# MODEL_NAME = "meta-llama/Llama-3.2-1B-Instruct"
 
 MAX_MODEL_LEN = None
 # MAX_MODEL_LEN = 16384
@@ -36,7 +38,7 @@ port = VLLM_PORTS[MODEL_NAME]
 huggingface_token = os.getenv("HF_TOKEN")
 
 instruction_login = f"uv run huggingface-cli login --token {huggingface_token}"
-instruction_serve = f"uv run vllm serve {MODEL_NAME} --port {port} --trust-remote-code --gpu-memory-utilization 1"
+instruction_serve = f"uv run vllm serve {MODEL_NAME} --port {port} --trust-remote-code --gpu-memory-utilization 0.9"
 if MAX_MODEL_LEN is not None:
     instruction_serve += f" --max-model-len {MAX_MODEL_LEN}"
 

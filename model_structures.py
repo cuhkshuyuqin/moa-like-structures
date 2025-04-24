@@ -3,6 +3,7 @@ from typing import Dict, List
 from Agents.Proposer import Proposer
 from Agents.Aggregator import Aggregator
 from Agents.BaseAgent import BaseAgent
+from Agents.Refiner import Refiner
 
 
 def structure_0(query):
@@ -127,15 +128,15 @@ def structure_self_moa_sota(query):
 
 
 def structure_token_cost_0(query):
-    model = "Qwen/Qwen2.5-1.5B-Instruct"
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
 
     only_model = Proposer(model, query)
 
     result = only_model.generate()
 
-    token_costs = get_token_costs({
-        "only_model": only_model
-    })
+    token_costs = {
+        "only_model": only_model,
+    }
 
     return result, token_costs
 
@@ -154,7 +155,7 @@ def structure_token_cost_1(query):
 
     result = layer1_1.generate()
 
-    token_costs = get_token_costs({
+    token_costs = {
         "layer0_1": layer0_1,
         "layer0_2": layer0_2,
         "layer0_3": layer0_3,
@@ -162,7 +163,30 @@ def structure_token_cost_1(query):
         "layer0_5": layer0_5,
         "layer0_6": layer0_6,
         "layer1_1": layer1_1,
-    })
+    }
+
+    return result, token_costs
+
+
+def structure_token_cost_1_4(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+    layer0_4 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3, layer0_4])
+
+    result = layer1_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer0_4": layer0_4,
+        "layer1_1": layer1_1,
+    }
 
     return result, token_costs
 
@@ -188,6 +212,619 @@ def structure_token_cost_2(query):
         "layer4_1": layer4_1,
         "layer5_1": layer5_1,
         "layer6_1": layer6_1,
+    }
+
+    return result, token_costs
+
+
+def structure_token_cost_2_4(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Aggregator(model, query, [layer0_1])
+    layer2_1 = Aggregator(model, query, [layer1_1])
+    layer3_1 = Aggregator(model, query, [layer2_1])
+    layer4_1 = Aggregator(model, query, [layer3_1])
+
+    result = layer4_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+    }
+
+    return result, token_costs
+
+
+def structure_token_cost_2_4(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Aggregator(model, query, [layer0_1])
+    layer2_1 = Aggregator(model, query, [layer1_1])
+    layer3_1 = Aggregator(model, query, [layer2_1])
+    layer4_1 = Aggregator(model, query, [layer3_1])
+
+    result = layer4_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+    }
+
+    return result, token_costs
+
+
+def structure_token_cost_3(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+    layer0_4 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2])
+    layer1_2 = Aggregator(model, query, [layer0_3, layer0_4])
+
+    layer2_1 = Aggregator(model, query, [layer1_1, layer1_2])
+
+    result = layer2_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer0_4": layer0_4,
+        "layer1_1": layer1_1,
+        "layer1_2": layer1_2,
+        "layer2_1": layer2_1,
+    }
+
+    return result, token_costs
+
+
+def structure_token_cost_4(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2])
+    layer1_2 = Aggregator(model, query, [layer0_1, layer0_2])
+
+    layer2_1 = Aggregator(model, query, [layer1_1, layer1_2])
+
+    layer3_1 = Aggregator(model, query, [layer2_1])
+
+    result = layer3_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer1_1": layer1_1,
+        "layer1_2": layer1_2,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+    }
+
+    return result, token_costs
+
+
+def structure_chain_1(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Aggregator(model, query, [layer0_1])
+
+    result = layer1_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+    }
+
+    return result, token_costs
+
+
+def structure_chain_2(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Aggregator(model, query, [layer0_1])
+    layer2_1 = Aggregator(model, query, [layer1_1])
+
+    result = layer2_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+    }
+
+    return result, token_costs
+
+
+def structure_chain_3(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Aggregator(model, query, [layer0_1])
+    layer2_1 = Aggregator(model, query, [layer1_1])
+    layer3_1 = Aggregator(model, query, [layer2_1])
+
+    result = layer3_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+    }
+
+    return result, token_costs
+
+
+def structure_chain_4(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Aggregator(model, query, [layer0_1])
+    layer2_1 = Aggregator(model, query, [layer1_1])
+    layer3_1 = Aggregator(model, query, [layer2_1])
+    layer4_1 = Aggregator(model, query, [layer3_1])
+
+    result = layer4_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+    }
+
+    return result, token_costs
+
+
+def structure_chain_5(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Aggregator(model, query, [layer0_1])
+    layer2_1 = Aggregator(model, query, [layer1_1])
+    layer3_1 = Aggregator(model, query, [layer2_1])
+    layer4_1 = Aggregator(model, query, [layer3_1])
+    layer5_1 = Aggregator(model, query, [layer4_1])
+
+    result = layer5_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+        "layer5_1": layer5_1,
+    }
+
+    return result, token_costs
+
+
+def structure_chain_6(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Aggregator(model, query, [layer0_1])
+    layer2_1 = Aggregator(model, query, [layer1_1])
+    layer3_1 = Aggregator(model, query, [layer2_1])
+    layer4_1 = Aggregator(model, query, [layer3_1])
+    layer5_1 = Aggregator(model, query, [layer4_1])
+    layer6_1 = Aggregator(model, query, [layer5_1])
+
+    result = layer6_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+        "layer5_1": layer5_1,
+        "layer6_1": layer6_1,
+    }
+
+    return result, token_costs
+
+
+def structure_chain_7(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Aggregator(model, query, [layer0_1])
+    layer2_1 = Aggregator(model, query, [layer1_1])
+    layer3_1 = Aggregator(model, query, [layer2_1])
+    layer4_1 = Aggregator(model, query, [layer3_1])
+    layer5_1 = Aggregator(model, query, [layer4_1])
+    layer6_1 = Aggregator(model, query, [layer5_1])
+    layer7_1 = Aggregator(model, query, [layer6_1])
+
+    result = layer7_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+        "layer5_1": layer5_1,
+        "layer6_1": layer6_1,
+        "layer7_1": layer7_1,
+    }
+
+    return result, token_costs
+
+
+def structure_chain_8(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Aggregator(model, query, [layer0_1])
+    layer2_1 = Aggregator(model, query, [layer1_1])
+    layer3_1 = Aggregator(model, query, [layer2_1])
+    layer4_1 = Aggregator(model, query, [layer3_1])
+    layer5_1 = Aggregator(model, query, [layer4_1])
+    layer6_1 = Aggregator(model, query, [layer5_1])
+    layer7_1 = Aggregator(model, query, [layer6_1])
+    layer8_1 = Aggregator(model, query, [layer7_1])
+
+    result = layer8_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+        "layer5_1": layer5_1,
+        "layer6_1": layer6_1,
+        "layer7_1": layer7_1,
+        "layer8_1": layer8_1,
+    }
+
+    return result, token_costs
+
+
+def structure_star_1(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1])
+
+    result = layer1_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+    }
+
+    return result, token_costs
+
+
+def structure_star_2(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2])
+
+    result = layer1_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer1_1": layer1_1,
+    }
+
+    return result, token_costs
+
+
+def structure_star_3(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3])
+
+    result = layer1_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer1_1": layer1_1,
+    }
+
+    return result, token_costs
+
+
+def structure_star_4(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+    layer0_4 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3, layer0_4])
+
+    result = layer1_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer0_4": layer0_4,
+        "layer1_1": layer1_1,
+    }
+
+    return result, token_costs
+
+
+def structure_star_5(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+    layer0_4 = Proposer(model, query)
+    layer0_5 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3, layer0_4, layer0_5])
+
+    result = layer1_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer0_4": layer0_4,
+        "layer0_5": layer0_5,
+        "layer1_1": layer1_1,
+    }
+
+    return result, token_costs
+
+
+def structure_star_6(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+    layer0_4 = Proposer(model, query)
+    layer0_5 = Proposer(model, query)
+    layer0_6 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3, layer0_4, layer0_5, layer0_6])
+
+    result = layer1_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer0_4": layer0_4,
+        "layer0_5": layer0_5,
+        "layer0_6": layer0_6,
+        "layer1_1": layer1_1,
+    }
+
+    return result, token_costs
+
+
+def structure_star_7(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+    layer0_4 = Proposer(model, query)
+    layer0_5 = Proposer(model, query)
+    layer0_6 = Proposer(model, query)
+    layer0_7 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3, layer0_4, layer0_5, layer0_6, layer0_7])
+
+    result = layer1_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer0_4": layer0_4,
+        "layer0_5": layer0_5,
+        "layer0_6": layer0_6,
+        "layer0_7": layer0_7,
+        "layer1_1": layer1_1,
+    }
+
+    return result, token_costs
+
+
+def structure_star_8(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+    layer0_4 = Proposer(model, query)
+    layer0_5 = Proposer(model, query)
+    layer0_6 = Proposer(model, query)
+    layer0_7 = Proposer(model, query)
+    layer0_8 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3, layer0_4, layer0_5, layer0_6, layer0_7, layer0_8])
+
+    result = layer1_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer0_4": layer0_4,
+        "layer0_5": layer0_5,
+        "layer0_6": layer0_6,
+        "layer0_7": layer0_7,
+        "layer0_8": layer0_8,
+        "layer1_1": layer1_1,
+    }
+
+    return result, token_costs
+
+
+def structure_fully_connected_2_4_2(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+    layer0_4 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3, layer0_4])
+    layer1_2 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3, layer0_4])
+
+    layer2_1 = Aggregator(model, query, [layer1_1, layer1_2])
+
+    result = layer2_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer0_4": layer0_4,
+        "layer1_1": layer1_1,
+        "layer1_2": layer1_2,
+        "layer2_1": layer2_1,
+    }
+
+    return result, token_costs
+
+
+def structure_chain_refiner_1(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+    temperature = 0.0
+    # temperature = 0.7
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Refiner(model, query, [layer0_1], temperature)
+
+    result = layer1_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+    }
+
+    return result, token_costs
+
+
+def structure_chain_refiner_2(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+    # temperature = 0.0
+    temperature = 0.7
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Refiner(model, query, [layer0_1], temperature)
+    layer2_1 = Refiner(model, query, [layer1_1], temperature)
+
+    result = layer2_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+    }
+
+    return result, token_costs
+
+
+def structure_chain_refiner_3(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+    temperature = 0.0
+    # temperature = 0.7
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Refiner(model, query, [layer0_1], temperature)
+    layer2_1 = Refiner(model, query, [layer1_1], temperature)
+    layer3_1 = Refiner(model, query, [layer2_1], temperature)
+
+    result = layer3_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+    }
+
+    return result, token_costs
+
+
+def structure_chain_refiner_4(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+    temperature = 0.0
+    # temperature = 0.7
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Refiner(model, query, [layer0_1], temperature)
+    layer2_1 = Refiner(model, query, [layer1_1], temperature)
+    layer3_1 = Refiner(model, query, [layer2_1], temperature)
+    layer4_1 = Refiner(model, query, [layer3_1], temperature)
+
+    result = layer4_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+    }
+
+    return result, token_costs
+
+
+def structure_chain_refiner_5(query):
+    model = "Qwen/Qwen2.5-0.5B-Instruct"
+    temperature = 0.0
+    # temperature = 0.7
+
+    layer0_1 = Proposer(model, query)
+    layer1_1 = Refiner(model, query, [layer0_1], temperature)
+    layer2_1 = Refiner(model, query, [layer1_1], temperature)
+    layer3_1 = Refiner(model, query, [layer2_1], temperature)
+    layer4_1 = Refiner(model, query, [layer3_1], temperature)
+    layer5_1 = Refiner(model, query, [layer4_1], temperature)
+
+    result = layer5_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+        "layer5_1": layer5_1,
     }
 
     return result, token_costs

@@ -265,7 +265,7 @@ def local_api_test():
 
 
 def model_availability_test():
-    MODEL = "Qwen/Qwen2-Math-7B-Instruct"
+    MODEL = "Qwen/Qwen1.5-0.5B-Chat"
 
     query = "What are 3 fun things to do in SF?"
 
@@ -298,4 +298,4 @@ def gemma_2_9b_it_wpo_hb_test():
 
 
 if __name__ == "__main__":
-    gemma_2_9b_it_wpo_hb_test()
+    model_availability_test()
