@@ -12,6 +12,7 @@ from utils import (
     VLLM_MODELS,
     VLLM_HOSTS,
     VLLM_PORTS,
+    OPEN_ROUTER_MODELS,
 )
 
 
@@ -49,7 +50,7 @@ class BaseAgent:
     def generate(self):
         if self.response is not None:
             return self.response
-
+        
         for model in TOGETHER_MODELS:
             if model == self.model_name:
                 self.response = self.generate_together()
@@ -63,6 +64,11 @@ class BaseAgent:
         for model in VLLM_MODELS:
             if model == self.model_name:
                 self.response = self.generate_vllm()
+                return self.response
+        
+        for model in OPEN_ROUTER_MODELS:
+            if model == self.model_name:
+                self.response = self.generate_open_router()
                 return self.response
 
     def generate_together(self):
@@ -130,6 +136,28 @@ class BaseAgent:
 
         if DEBUG:
             logger.debug(f"{str(self)} generate_vllm:\n{response_content}")
+
+        return response_content
+
+    def generate_open_router(self):
+        messages = self.get_messages()
+        self.analyze_input_tokens(messages)
+
+        client = OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key=os.environ.get("OPENROUTER_API_KEY"),
+        )
+
+        response = client.chat.completions.create(
+            model=self.model_name,
+            messages=messages,
+            temperature=self.temperature,
+        )
+        response_content = response.choices[0].message.content
+        self.analyze_output_tokens(response_content)
+
+        if DEBUG:
+            logger.debug(f"{str(self)} generate_open_router:\n{response_content}")
 
         return response_content
 
