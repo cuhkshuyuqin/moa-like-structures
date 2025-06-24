@@ -2,7 +2,10 @@ import toml
 from loguru import logger
 from datetime import datetime
 import os
+from dotenv import load_dotenv
 
+
+load_dotenv()
 
 START_TIME = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 

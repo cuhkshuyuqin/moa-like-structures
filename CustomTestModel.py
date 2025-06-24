@@ -3,28 +3,14 @@ from deepeval.models import DeepEvalBaseLLM
 from model_structures import *
 
 SETTINGS_INFO = """
-def structure_chain_refiner_3(query):
-    model = "Qwen/Qwen2.5-0.5B-Instruct"
-    temperature = 0.0
-    # temperature = 0.7
+def qwen3_30b_a3b_test(query):
+    model = "qwen/qwen3-30b-a3b"
 
-    layer0_1 = Proposer(model, query)
-    layer1_1 = Refiner(model, query, [layer0_1], temperature)
-    layer2_1 = Refiner(model, query, [layer1_1], temperature)
-    layer3_1 = Refiner(model, query, [layer2_1], temperature)
+    proposer = Proposer(model, query)
 
-    result = layer3_1.generate()
-
-    token_costs = {
-        "layer0_1": layer0_1,
-        "layer1_1": layer1_1,
-        "layer2_1": layer2_1,
-        "layer3_1": layer3_1,
-    }
-
-    return result, token_costs
+    return proposer.generate()
 """
-MODEL_STRUCTURE = structure_chain_refiner_3
+MODEL_STRUCTURE = qwen3_30b_a3b_test
 
 
 class CustomTestModel(DeepEvalBaseLLM):
