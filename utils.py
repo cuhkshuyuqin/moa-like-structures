@@ -17,7 +17,7 @@ AZURE_MODELS = inference_config["azure"]
 VLLM_MODELS = inference_config["vllm"]
 VLLM_HOSTS = inference_config["vllm_hosts"]
 VLLM_PORTS = inference_config["vllm_ports"]
-OPEN_ROUTER_MODELS = inference_config["open_router"]
+OPENROUTER_MODELS = inference_config["openrouter"]
 
 LOG_DIR = "logs"
 

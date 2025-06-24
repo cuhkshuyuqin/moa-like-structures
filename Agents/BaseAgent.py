@@ -12,7 +12,7 @@ from utils import (
     VLLM_MODELS,
     VLLM_HOSTS,
     VLLM_PORTS,
-    OPEN_ROUTER_MODELS,
+    OPENROUTER_MODELS,
 )
 
 
@@ -66,16 +66,16 @@ class BaseAgent:
                 self.response = self.generate_vllm()
                 return self.response
         
-        for model in OPEN_ROUTER_MODELS:
+        for model in OPENROUTER_MODELS:
             if model == self.model_name:
-                self.response = self.generate_open_router()
+                self.response = self.generate_openrouter()
                 return self.response
 
     def generate_together(self):
         messages = self.get_messages()
         self.analyze_input_tokens(messages)
 
-        client = Together(api_key=os.environ.get("TOGETHER_API_KEY"))
+        client = Together(api_key=os.getenv("TOGETHER_API_KEY"))
         response = client.chat.completions.create(
             model=self.model_name,
             messages=messages,
@@ -92,8 +92,8 @@ class BaseAgent:
     def generate_azure(self):
         client = AzureOpenAI(
             api_key=os.getenv("AZURE_API_KEY"),
-            api_version=os.getenv("AZURE_API_VERSION"),
             azure_endpoint=os.getenv("AZURE_ENDPOINT"),
+            api_version=os.getenv("AZURE_API_VERSION"),
         )
         azure_model_name = os.getenv("AZURE_MODEL_NAME")
 
@@ -139,13 +139,13 @@ class BaseAgent:
 
         return response_content
 
-    def generate_open_router(self):
+    def generate_openrouter(self):
         messages = self.get_messages()
         self.analyze_input_tokens(messages)
 
         client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
-            api_key=os.environ.get("OPENROUTER_API_KEY"),
+            api_key=os.getenv("OPENROUTER_API_KEY"),
         )
 
         response = client.chat.completions.create(
@@ -157,7 +157,7 @@ class BaseAgent:
         self.analyze_output_tokens(response_content)
 
         if DEBUG:
-            logger.debug(f"{str(self)} generate_open_router:\n{response_content}")
+            logger.debug(f"{str(self)} generate_openrouter:\n{response_content}")
 
         return response_content
 
