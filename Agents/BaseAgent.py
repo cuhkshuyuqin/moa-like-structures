@@ -1,9 +1,12 @@
 from typing import List
-from together import Together
 import os
+import asyncio
+
 from loguru import logger
-from openai import AzureOpenAI, OpenAI
+from together import AsyncTogether
+from openai import AsyncAzureOpenAI, AsyncOpenAI
 from transformers import AutoTokenizer
+
 
 from utils import (
     DEBUG,
@@ -33,74 +36,75 @@ class BaseAgent:
         self.query = query
         self.predecessors: List[BaseAgent] = predecessors
         self.temperature = temperature
+        self.messages = None
         self.response = None
         self.total_input_tokens = 0
         self.total_output_tokens = 0
 
-    def collect_predecessor_outputs(self):
-        predecessor_outputs = []
-        for predecessor in self.predecessors:
-            predecessor_outputs.append(predecessor.generate())
+    async def collect_predecessor_outputs(self):
+        predecessor_outputs = await asyncio.gather(*[predecessor.generate() for predecessor in self.predecessors])
+
+        if DEBUG:
+            logger.debug(f"{str(self)} collect_predecessor_outputs:\n{predecessor_outputs}")
 
         return predecessor_outputs
 
-    def get_messages(self):
+    async def get_messages(self):
         raise Exception("Can NOT get_messages from a BaseAgent")
 
-    def generate(self):
+    async def generate(self):
         if self.response is not None:
             return self.response
+
+        self.messages = await self.get_messages()
+        self.analyze_input_tokens(self.messages)
         
         for model in TOGETHER_MODELS:
             if model == self.model_name:
-                self.response = self.generate_together()
-                return self.response
+                self.response = await self.generate_together()
 
         for model in AZURE_MODELS:
             if model == self.model_name:
-                self.response = self.generate_azure()
-                return self.response
+                self.response = await self.generate_azure()
 
         for model in VLLM_MODELS:
             if model == self.model_name:
-                self.response = self.generate_vllm()
-                return self.response
-        
+                self.response = await self.generate_vllm()
+
         for model in OPENROUTER_MODELS:
             if model == self.model_name:
-                self.response = self.generate_openrouter()
-                return self.response
+                self.response = await self.generate_openrouter()
 
-    def generate_together(self):
-        messages = self.get_messages()
-        self.analyze_input_tokens(messages)
+        self.analyze_output_tokens(self.response)
 
-        client = Together(api_key=os.getenv("TOGETHER_API_KEY"))
-        response = client.chat.completions.create(
+        return self.response
+
+    async def generate_together(self):
+        async_client = AsyncTogether(api_key=os.environ.get("TOGETHER_API_KEY"))
+        response = await async_client.chat.completions.create(
             model=self.model_name,
-            messages=messages,
+            messages=self.messages,
             temperature=self.temperature,
         )
         response_content = response.choices[0].message.content
-        self.analyze_output_tokens(response_content)
 
         if DEBUG:
             logger.debug(f"{str(self)} generate_together:\n{response_content}")
 
         return response_content
 
-    def generate_azure(self):
-        client = AzureOpenAI(
+    async def generate_azure(self):
+        client = AsyncAzureOpenAI(
             api_key=os.getenv("AZURE_API_KEY"),
             azure_endpoint=os.getenv("AZURE_ENDPOINT"),
             api_version=os.getenv("AZURE_API_VERSION"),
         )
         azure_model_name = os.getenv("AZURE_MODEL_NAME")
 
-        response = client.chat.completions.create(
+        response = await client.chat.completions.create(
             model=azure_model_name,
             temperature=self.temperature,
-            messages=self.get_messages(),
+            messages=self.messages,
         )
         response_content = response.choices[0].message.content
 
@@ -109,10 +113,7 @@ class BaseAgent:
 
         return response_content
 
-    def generate_vllm(self):
-        messages = self.get_messages()
-        self.analyze_input_tokens(messages)
-
+    async def generate_vllm(self):
         api_key = "EMPTY"
         base_url = (
             f"http://{VLLM_HOSTS[self.model_name]}:{VLLM_PORTS[self.model_name]}/v1"
@@ -121,40 +122,35 @@ class BaseAgent:
         if DEBUG:
             logger.debug(f"vLLM Client URL: {base_url}")
 
-        client = OpenAI(
+        client = AsyncOpenAI(
             api_key=api_key,
             base_url=base_url,
         )
 
-        response = client.chat.completions.create(
+        response = await client.chat.completions.create(
             model=self.model_name,
             temperature=self.temperature,
-            messages=messages,
+            messages=self.messages,
         )
         response_content = response.choices[0].message.content
-        self.analyze_output_tokens(response_content)
 
         if DEBUG:
             logger.debug(f"{str(self)} generate_vllm:\n{response_content}")
 
         return response_content
 
-    def generate_openrouter(self):
-        messages = self.get_messages()
-        self.analyze_input_tokens(messages)
-
-        client = OpenAI(
+    async def generate_openrouter(self):
+        client = AsyncOpenAI(
             base_url="https://openrouter.ai/api/v1",
             api_key=os.getenv("OPENROUTER_API_KEY"),
         )
 
-        response = client.chat.completions.create(
+        response = await client.chat.completions.create(
             model=self.model_name,
-            messages=messages,
+            messages=self.messages,
             temperature=self.temperature,
         )
         response_content = response.choices[0].message.content
-        self.analyze_output_tokens(response_content)
 
         if DEBUG:
             logger.debug(f"{str(self)} generate_openrouter:\n{response_content}")

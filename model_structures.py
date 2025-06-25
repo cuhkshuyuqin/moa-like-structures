@@ -957,13 +957,3 @@ def structure_fully_connected(query, shape: List[int]):
 
 def structure_rectangle(query, depth, length):
     return structure_fully_connected(query, [length] * depth)
-
-def qwen3_30b_a3b_test(query):
-    model = "qwen/qwen3-30b-a3b"
-
-    proposer = Proposer(model, query)
-
-    return proposer.generate()
-
-if __name__ == "__main__":
-    qwen3_30b_a3b_test("What are 3 fun things to do in SF?")

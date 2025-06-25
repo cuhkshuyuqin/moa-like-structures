@@ -1,7 +1,8 @@
 from openai import AzureOpenAI, OpenAI
 import os
-from vllm import LLM, SamplingParams
+# from vllm import LLM, SamplingParams
 import sys
+import asyncio
 
 from Agents.Proposer import Proposer
 from Agents.Aggregator import Aggregator
@@ -296,6 +297,28 @@ def gemma_2_9b_it_wpo_hb_test():
 
     print(model.generate())
 
+def qwen3_30b_a3b_test():
+    MODEL = "qwen/qwen3-30b-a3b"
+
+    query = "What are 3 fun things to do in SF?"
+
+    proposer = Proposer(MODEL, query)
+
+    return proposer.generate()
+
+
+async def async_test():
+    MODEL = "qwen/qwen3-30b-a3b"
+
+    query = "What are 3 fun things to do in SF?"
+
+    proposer1 = Proposer(MODEL, query)
+    proposer2 = Proposer(MODEL, query)
+
+    aggregator = Aggregator(MODEL, query, [proposer1, proposer2])
+
+    return await aggregator.generate()
+
 
 if __name__ == "__main__":
-    model_availability_test()
+    asyncio.run(async_test())

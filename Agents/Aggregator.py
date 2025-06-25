@@ -3,7 +3,8 @@ from loguru import logger
 from .BaseAgent import BaseAgent
 from utils import DEBUG
 
-aggreagator_system_prompt = """You have been provided with a set of responses from various open-source models to the latest user query. Your task is to synthesize these responses into a single, high-quality response. It is crucial to critically evaluate the information provided in these responses, recognizing that some of it may be biased or incorrect. Your response should not simply replicate the given answers but should offer a refined, accurate, and comprehensive reply to the instruction. Ensure your response is well-structured, coherent, and adheres to the highest standards of accuracy and reliability.
+
+AGGREGATOR_SYSTEM_PROMPT = """You have been provided with a set of responses from various open-source models to the latest user query. Your task is to synthesize these responses into a single, high-quality response. It is crucial to critically evaluate the information provided in these responses, recognizing that some of it may be biased or incorrect. Your response should not simply replicate the given answers but should offer a refined, accurate, and comprehensive reply to the instruction. Ensure your response is well-structured, coherent, and adheres to the highest standards of accuracy and reliability.
 
 Responses from models:"""
 
@@ -26,12 +27,12 @@ class Aggregator(BaseAgent):
         if DEBUG:
             logger.debug(f"{str(self)} created")
 
-    def get_messages(self):
-        predecessor_outputs = self.collect_predecessor_outputs()
+    async def get_messages(self):
+        predecessor_outputs = await self.collect_predecessor_outputs()
         messages = [
             {
                 "role": "system",
-                "content": aggreagator_system_prompt
+                "content": AGGREGATOR_SYSTEM_PROMPT
                 + "\n"
                 + "\n".join(
                     [

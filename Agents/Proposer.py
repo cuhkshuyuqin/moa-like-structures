@@ -22,7 +22,7 @@ class Proposer(BaseAgent):
         if DEBUG:
             logger.debug(f"{str(self)} created")
 
-    def get_messages(self):
+    async def get_messages(self):
         messages = [{"role": "user", "content": self.query}]
 
         if DEBUG:
