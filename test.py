@@ -1,6 +1,6 @@
 from openai import AzureOpenAI, OpenAI
 import os
-# from vllm import LLM, SamplingParams
+from vllm import LLM, SamplingParams
 import sys
 import asyncio
 
