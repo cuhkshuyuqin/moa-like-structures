@@ -1,6 +1,7 @@
 from typing import List
 import os
 import asyncio
+import aiohttp
 
 from loguru import logger
 from together import AsyncTogether
@@ -16,6 +17,7 @@ from utils import (
     VLLM_HOSTS,
     VLLM_PORTS,
     OPENROUTER_MODELS,
+    OPENROUTER_MODEL_PROVIDERS,
 )
 
 
@@ -40,6 +42,7 @@ class BaseAgent:
         self.response = None
         self.total_input_tokens = 0
         self.total_output_tokens = 0
+        self.generate_task = None
 
     async def collect_predecessor_outputs(self):
         predecessor_outputs = await asyncio.gather(*[predecessor.generate() for predecessor in self.predecessors])
@@ -55,7 +58,15 @@ class BaseAgent:
     async def generate(self):
         if self.response is not None:
             return self.response
+        
+        if self.generate_task is None:
+            self.generate_task = asyncio.create_task(self.generate_once())
+        
+        self.response = await self.generate_task
+        
+        return self.response
 
+    async def generate_once(self):
         self.messages = await self.get_messages()
         self.analyze_input_tokens(self.messages)
         
@@ -140,20 +151,48 @@ class BaseAgent:
         return response_content
 
     async def generate_openrouter(self):
-        client = AsyncOpenAI(
-            base_url="https://openrouter.ai/api/v1",
-            api_key=os.getenv("OPENROUTER_API_KEY"),
-        )
+        if DEBUG:
+            logger.debug(f"{str(self)} generate_openrouter:\nproviders:\n{OPENROUTER_MODEL_PROVIDERS[self.model_name]}\nmessages:\n{self.messages}")
 
-        response = await client.chat.completions.create(
-            model=self.model_name,
-            messages=self.messages,
-            temperature=self.temperature,
-        )
-        response_content = response.choices[0].message.content
+        # client = AsyncOpenAI(
+        #     base_url="https://openrouter.ai/api/v1",
+        #     api_key=os.getenv("OPENROUTER_API_KEY"),
+        # )
+
+        # response = await client.chat.completions.create(
+        #     model=self.model_name,
+        #     messages=self.messages,
+        #     temperature=self.temperature,
+        #     # provider={
+        #     #     'order': OPENROUTER_MODEL_PROVIDERS[self.model_name],
+        #     # },
+        # )
+        # response_content = response.choices[0].message.content
+
+        headers = {
+        "Authorization": "Bearer {}".format(os.getenv("OPENROUTER_API_KEY")),
+        "Content-Type": "application/json",
+        }
+
+        async with aiohttp.ClientSession() as session:
+            async with session.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json={
+                "model": self.model_name,
+                "messages": self.messages,
+                "temperature": self.temperature,
+                "provider": {
+                    "order": OPENROUTER_MODEL_PROVIDERS[self.model_name],
+                    "allow_fallbacks": False
+                },
+            }) as response:
+                if response.status == 200:
+                    response_json = await response.json()
+                    response_content = response_json["choices"][0]["message"]["content"]
+                else:
+                    logger.info(f"{str(self)} generate_openrouter:\nError when calling OpenRouter")
+                    exit(1)
 
         if DEBUG:
-            logger.debug(f"{str(self)} generate_openrouter:\n{response_content}")
+            logger.debug(f"{str(self)} generate_openrouter:\nresponse:\n{response_content}")
 
         return response_content
 

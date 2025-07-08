@@ -297,6 +297,7 @@ def gemma_2_9b_it_wpo_hb_test():
 
     print(model.generate())
 
+
 def qwen3_30b_a3b_test():
     MODEL = "qwen/qwen3-30b-a3b"
 
@@ -321,4 +322,7 @@ async def async_test():
 
 
 if __name__ == "__main__":
-    asyncio.run(async_test())
+    from model_structures import structure_fully_connected_2_4_2_qwen3_30b_a3b
+    query = "What are 3 fun things to do in SF?"
+    result, _ = asyncio.run(structure_fully_connected_2_4_2_qwen3_30b_a3b(query))
+    print(result)

@@ -21,6 +21,7 @@ VLLM_MODELS = inference_config["vllm"]
 VLLM_HOSTS = inference_config["vllm_hosts"]
 VLLM_PORTS = inference_config["vllm_ports"]
 OPENROUTER_MODELS = inference_config["openrouter"]
+OPENROUTER_MODEL_PROVIDERS = inference_config["openrouter_providers"]
 
 LOG_DIR = "logs"
 

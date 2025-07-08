@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "aiohttp>=3.11.16",
     "alpaca-eval>=0.6.6",
     "datasets>=3.4.1",
     "deepeval>=2.6.4",
