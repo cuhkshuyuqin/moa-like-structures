@@ -1,4 +1,5 @@
 from typing import Dict, List
+from datetime import datetime
 
 from Agents.Proposer import Proposer
 from Agents.Aggregator import Aggregator
@@ -985,3 +986,19 @@ def structure_fully_connected(query, shape: List[int]):
 
 def structure_rectangle(query, depth, length):
     return structure_fully_connected(query, [length] * depth)
+
+
+async def structure_qwen_30b_a3b(query):
+    model = "qwen/qwen3-30b-a3b"
+
+    layer0_1 = Proposer(model, query)
+
+    print("before innergen", datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+    result = await layer0_1.generate()
+    print("before innergen", datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+
+    token_costs = {
+        "layer0_1": layer0_1
+    }
+
+    return result, token_costs

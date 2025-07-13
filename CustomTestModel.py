@@ -3,14 +3,20 @@ from deepeval.models import DeepEvalBaseLLM
 from model_structures import *
 
 SETTINGS_INFO = """
-def qwen3_30b_a3b_test(query):
+async def structure_qwen_30b_a3b(query):
     model = "qwen/qwen3-30b-a3b"
 
-    proposer = Proposer(model, query)
+    layer0_1 = Proposer(model, query)
 
-    return proposer.generate()
+    result = layer0_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1
+    }
+
+    return result, token_costs
 """
-MODEL_STRUCTURE = qwen3_30b_a3b_test
+MODEL_STRUCTURE = structure_qwen_30b_a3b
 
 
 class CustomTestModel(DeepEvalBaseLLM):
@@ -27,7 +33,9 @@ class CustomTestModel(DeepEvalBaseLLM):
         return result
 
     async def a_generate(self, prompt: str) -> str:
-        return self.generate(prompt)
+        result, token_costs = await MODEL_STRUCTURE(prompt)
+        self.sum_token_costs(token_costs)
+        return result
 
     def get_model_name(self):
         return "CustomTestModel"
