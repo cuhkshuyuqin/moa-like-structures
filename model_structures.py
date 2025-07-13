@@ -1,5 +1,4 @@
 from typing import Dict, List
-from datetime import datetime
 
 from Agents.Proposer import Proposer
 from Agents.Aggregator import Aggregator
@@ -992,9 +991,7 @@ async def structure_qwen_30b_a3b(query):
 
     layer0_1 = Proposer(model, query)
 
-    print("before innergen", datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
     result = await layer0_1.generate()
-    print("before innergen", datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
 
     token_costs = {
         "layer0_1": layer0_1

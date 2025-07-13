@@ -5,7 +5,6 @@ import os
 import copy
 import json
 import asyncio
-from datetime import datetime
 
 from CustomTestModel import CustomTestModel, SETTINGS_INFO
 from utils import LOG_DIR, RESULTS_DIR, START_TIME
@@ -28,18 +27,14 @@ async def evaluate():
 
             new_eval = copy.deepcopy(example)
 
-            print(" before trying  ", datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
             for trying in range(TRYING_TIMES):
                 try:
-                    print("before generate", datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
                     new_eval["output"] = await custom_test_model.a_generate(example["instruction"])
-                    print("after  generate", datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
                     new_eval["generator"] = custom_test_model.get_model_name()
                 except Exception as e:
                     traceback.print_exc()
                     continue
                 break
-            print("after  trying  ", datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
 
             eval_set_evaluated.append(new_eval)
 

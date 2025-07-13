@@ -2,7 +2,6 @@ from typing import List
 import os
 import asyncio
 import aiohttp
-from datetime import datetime
 
 from loguru import logger
 from together import AsyncTogether
@@ -176,7 +175,6 @@ class BaseAgent:
         }
 
         async with aiohttp.ClientSession() as session:
-            print("before inningen", datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
             async with session.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json={
                 "model": self.model_name,
                 "messages": self.messages,
@@ -187,15 +185,11 @@ class BaseAgent:
                 },
             }) as response:
                 if response.status == 200:
-                    print("before response", datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
                     response_json = await response.json()
-                    print("after  response", datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
                     response_content = response_json["choices"][0]["message"]["content"]
                 else:
                     logger.info(f"{str(self)} generate_openrouter:\nError when calling OpenRouter")
                     exit(1)
-        
-        print("after  inningen", datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
 
         if DEBUG:
             logger.debug(f"{str(self)} generate_openrouter:\nresponse:\n{response_content}")
