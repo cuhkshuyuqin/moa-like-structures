@@ -18,3 +18,6 @@ results/
 
 # Dotenv
 .env
+
+# AlpacaEval Config
+client_configs.yaml

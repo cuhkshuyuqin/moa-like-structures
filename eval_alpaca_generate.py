@@ -31,7 +31,7 @@ async def evaluate():
                 try:
                     new_eval["output"] = await custom_test_model.a_generate(example["instruction"])
                     new_eval["generator"] = custom_test_model.get_model_name()
-                except Exception as e:
+                except BaseException as e:
                     traceback.print_exc()
                     continue
                 break

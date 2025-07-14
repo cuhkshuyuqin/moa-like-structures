@@ -1,6 +1,6 @@
-FILE_1 = "results/alpaca/2025-04-22-21-09-37_token_costs.txt"
-FILE_2 = "results/alpaca/2025-04-23-12-29-13_token_costs.txt"
-FILE_combined = "results/alpaca/2025-04-22-21-09-37_token_costs_combined.txt"
+FILE_1 = "results/alpaca/2025-07-13-20-56-41_token_costs_combined_2.txt"
+FILE_2 = "results/alpaca/2025-07-13-16-39-50_token_costs.txt"
+FILE_combined = "results/alpaca/2025-07-13-20-56-41_token_costs_combined_3.txt"
 
 with open(FILE_1, "r") as file_1:
     with open(FILE_2, "r") as file_2:
