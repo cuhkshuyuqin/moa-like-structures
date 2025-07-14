@@ -27,7 +27,10 @@ from utils import (
 # MODEL_NAME = "Qwen/Qwen2.5-0.5B-Instruct"
 # MODEL_NAME = "Qwen/Qwen1.5-0.5B-Chat"
 # MODEL_NAME = "meta-llama/Llama-3.2-1B-Instruct"
-MODEL_NAME = "Qwen/Qwen3-4B"
+# MODEL_NAME = "Qwen/Qwen3-4B"
+# MODEL_NAME = "Qwen/Qwen3-1.7B"
+# MODEL_NAME = "Qwen/Qwen3-0.6B"
+MODEL_NAME = "Qwen/Qwen3-30B-A3B"
 
 MAX_MODEL_LEN = None
 # MAX_MODEL_LEN = 16384

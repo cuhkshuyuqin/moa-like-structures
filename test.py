@@ -322,7 +322,7 @@ async def async_test():
 
 
 if __name__ == "__main__":
-    from model_structures import structure_fully_connected_2_4_2_qwen3_30b_a3b
+    from model_structures import structure_fully_connected_2_4_2_qwen3_4b
     query = "What are 3 fun things to do in SF?"
-    result, _ = asyncio.run(structure_fully_connected_2_4_2_qwen3_30b_a3b(query))
+    result, _ = asyncio.run(structure_fully_connected_2_4_2_qwen3_4b(query))
     print(result)

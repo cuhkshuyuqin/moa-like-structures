@@ -3,8 +3,8 @@ from deepeval.models import DeepEvalBaseLLM
 from model_structures import *
 
 SETTINGS_INFO = """
-async def structure_qwen_30b_a3b(query):
-    model = "qwen/qwen3-30b-a3b"
+async def structure_single_model_general(query):
+    model = "Qwen/Qwen3-0.6B"
 
     layer0_1 = Proposer(model, query)
 
@@ -16,7 +16,7 @@ async def structure_qwen_30b_a3b(query):
 
     return result, token_costs
 """
-MODEL_STRUCTURE = structure_qwen_30b_a3b
+MODEL_STRUCTURE = structure_single_model_general
 
 
 class CustomTestModel(DeepEvalBaseLLM):

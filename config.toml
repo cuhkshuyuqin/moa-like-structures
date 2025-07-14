@@ -29,6 +29,8 @@ vllm = [
     "Qwen/Qwen1.5-0.5B-Chat",
     "meta-llama/Llama-3.2-1B-Instruct",
     "Qwen/Qwen3-4B",
+    "Qwen/Qwen3-1.7B",
+    "Qwen/Qwen3-0.6B",
 ]
 openrouter = [
     "qwen/qwen3-30b-a3b"
@@ -52,6 +54,8 @@ openrouter = [
 "Qwen/Qwen1.5-0.5B-Chat" = "localhost"
 "meta-llama/Llama-3.2-1B-Instruct" = "localhost"
 "Qwen/Qwen3-4B" = "localhost"
+"Qwen/Qwen3-1.7B" = "localhost"
+"Qwen/Qwen3-0.6B" = "localhost"
 
 [inference.vllm_ports]
 "Qwen/Qwen2.5-1.5B-Instruct" = 18000
@@ -71,6 +75,8 @@ openrouter = [
 "Qwen/Qwen1.5-0.5B-Chat" = 18014
 "meta-llama/Llama-3.2-1B-Instruct" = 18015
 "Qwen/Qwen3-4B" = 18016
+"Qwen/Qwen3-1.7B" = 18017
+"Qwen/Qwen3-0.6B" = 18018
 
 [inference.openrouter_providers]
 "qwen/qwen3-30b-a3b" = ["parasail/fp8"]

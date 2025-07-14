@@ -1215,3 +1215,16 @@ async def structure_fully_connected_2_4_2_qwen3_4b(query):
     }
 
     return result, token_costs
+
+async def structure_single_model_general(query):
+    model = "Qwen/Qwen3-0.6B"
+
+    layer0_1 = Proposer(model, query)
+
+    result = await layer0_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1
+    }
+
+    return result, token_costs
