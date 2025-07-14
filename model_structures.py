@@ -1027,7 +1027,7 @@ async def structure_fully_connected_2_4_2_qwen_30b_a3b(query):
     return result, token_costs
 
 async def structure_complete_tree_3_2_qwen_30b_a3b(query):
-    model = "Qwen/Qwen2.5-0.5B-Instruct"
+    model = "qwen/qwen3-30b-a3b"
 
     layer0_1 = Proposer(model, query)
     layer0_2 = Proposer(model, query)
@@ -1049,6 +1049,142 @@ async def structure_complete_tree_3_2_qwen_30b_a3b(query):
         "layer1_1": layer1_1,
         "layer1_2": layer1_2,
         "layer2_1": layer2_1,
+    }
+
+    return result, token_costs
+
+async def structure_compare_original(query):
+    model = "qwen/qwen3-30b-a3b"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3])
+    layer1_2 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3])
+    layer1_3 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3])
+
+    layer2_1 = Aggregator(model, query, [layer1_1, layer1_2, layer1_3])
+    layer2_2 = Aggregator(model, query, [layer1_1, layer1_2, layer1_3])
+    layer2_3 = Aggregator(model, query, [layer1_1, layer1_2, layer1_3])
+
+    layer3_1 = Aggregator(model, query, [layer2_1, layer2_2, layer2_3])
+
+    result = await layer3_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer1_1": layer1_1,
+        "layer1_2": layer1_2,
+        "layer1_3": layer1_3,
+        "layer2_1": layer2_1,
+        "layer2_2": layer2_2,
+        "layer2_3": layer2_3,
+        "layer3_1": layer3_1,
+    }
+
+    return result, token_costs
+
+async def structure_compare_improved_1(query):
+    model = "qwen/qwen3-30b-a3b"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_2, layer0_3])
+    layer1_2 = Aggregator(model, query, [layer0_1, layer0_3])
+    layer1_3 = Aggregator(model, query, [layer0_1, layer0_2])
+
+    layer2_1 = Aggregator(model, query, [layer1_2, layer1_3])
+    layer2_2 = Aggregator(model, query, [layer1_1, layer1_3])
+    layer2_3 = Aggregator(model, query, [layer1_1, layer1_2])
+
+    layer3_1 = Aggregator(model, query, [layer2_1, layer2_2, layer2_3])
+
+    result = await layer3_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer1_1": layer1_1,
+        "layer1_2": layer1_2,
+        "layer1_3": layer1_3,
+        "layer2_1": layer2_1,
+        "layer2_2": layer2_2,
+        "layer2_3": layer2_3,
+        "layer3_1": layer3_1,
+    }
+
+    return result, token_costs
+
+async def structure_compare_improved_2(query):
+    model = "qwen/qwen3-30b-a3b"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3])
+    layer1_2 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3])
+    layer1_3 = Aggregator(model, query, [layer0_1, layer0_2, layer0_3])
+
+    layer2_1 = Aggregator(model, query, [layer1_2, layer1_3])
+    layer2_2 = Aggregator(model, query, [layer1_1, layer1_3])
+    layer2_3 = Aggregator(model, query, [layer1_1, layer1_2])
+
+    layer3_1 = Aggregator(model, query, [layer2_1, layer2_2, layer2_3])
+
+    result = await layer3_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer1_1": layer1_1,
+        "layer1_2": layer1_2,
+        "layer1_3": layer1_3,
+        "layer2_1": layer2_1,
+        "layer2_2": layer2_2,
+        "layer2_3": layer2_3,
+        "layer3_1": layer3_1,
+    }
+
+    return result, token_costs
+
+async def structure_compare_improved_3(query):
+    model = "qwen/qwen3-30b-a3b"
+
+    layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_2, layer0_3])
+    layer1_2 = Aggregator(model, query, [layer0_1, layer0_3])
+    layer1_3 = Aggregator(model, query, [layer0_1, layer0_2])
+
+    layer2_1 = Aggregator(model, query, [layer1_1, layer1_2, layer1_3])
+    layer2_2 = Aggregator(model, query, [layer1_1, layer1_2, layer1_3])
+    layer2_3 = Aggregator(model, query, [layer1_1, layer1_2, layer1_3])
+
+    layer3_1 = Aggregator(model, query, [layer2_1, layer2_2, layer2_3])
+
+    result = await layer3_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer1_1": layer1_1,
+        "layer1_2": layer1_2,
+        "layer1_3": layer1_3,
+        "layer2_1": layer2_1,
+        "layer2_2": layer2_2,
+        "layer2_3": layer2_3,
+        "layer3_1": layer3_1,
     }
 
     return result, token_costs
