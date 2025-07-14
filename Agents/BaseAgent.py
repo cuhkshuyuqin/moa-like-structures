@@ -189,7 +189,7 @@ class BaseAgent:
                     response_content = response_json["choices"][0]["message"]["content"]
                 else:
                     logger.info(f"{str(self)} generate_openrouter:\nError when calling OpenRouter")
-                    exit(1)
+                    raise Exception("Error when calling OpenRouter")
 
         if DEBUG:
             logger.debug(f"{str(self)} generate_openrouter:\nresponse:\n{response_content}")

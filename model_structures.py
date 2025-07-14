@@ -1217,7 +1217,7 @@ async def structure_fully_connected_2_4_2_qwen3_4b(query):
     return result, token_costs
 
 async def structure_single_model_general(query):
-    model = "Qwen/Qwen3-0.6B"
+    model = "Qwen/Qwen3-4B"
 
     layer0_1 = Proposer(model, query)
 

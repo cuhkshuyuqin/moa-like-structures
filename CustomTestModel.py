@@ -3,20 +3,34 @@ from deepeval.models import DeepEvalBaseLLM
 from model_structures import *
 
 SETTINGS_INFO = """
-async def structure_single_model_general(query):
-    model = "Qwen/Qwen3-0.6B"
+async def structure_complete_tree_3_2_qwen3_30b_a3b(query):
+    model = "qwen/qwen3-30b-a3b"
 
     layer0_1 = Proposer(model, query)
+    layer0_2 = Proposer(model, query)
+    layer0_3 = Proposer(model, query)
+    layer0_4 = Proposer(model, query)
 
-    result = await layer0_1.generate()
+    layer1_1 = Aggregator(model, query, [layer0_1, layer0_2])
+    layer1_2 = Aggregator(model, query, [layer0_3, layer0_4])
+
+    layer2_1 = Aggregator(model, query, [layer1_1, layer1_2])
+
+    result = await layer2_1.generate()
 
     token_costs = {
-        "layer0_1": layer0_1
+        "layer0_1": layer0_1,
+        "layer0_2": layer0_2,
+        "layer0_3": layer0_3,
+        "layer0_4": layer0_4,
+        "layer1_1": layer1_1,
+        "layer1_2": layer1_2,
+        "layer2_1": layer2_1,
     }
 
     return result, token_costs
 """
-MODEL_STRUCTURE = structure_single_model_general
+MODEL_STRUCTURE = structure_complete_tree_3_2_qwen3_30b_a3b
 
 
 class CustomTestModel(DeepEvalBaseLLM):
