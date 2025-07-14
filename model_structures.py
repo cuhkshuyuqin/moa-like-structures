@@ -986,7 +986,7 @@ def structure_fully_connected(query, shape: List[int]):
 def structure_rectangle(query, depth, length):
     return structure_fully_connected(query, [length] * depth)
 
-async def structure_qwen_30b_a3b(query):
+async def structure_qwen3_30b_a3b(query):
     model = "qwen/qwen3-30b-a3b"
 
     layer0_1 = Proposer(model, query)
@@ -999,7 +999,7 @@ async def structure_qwen_30b_a3b(query):
 
     return result, token_costs
 
-async def structure_fully_connected_2_4_2_qwen_30b_a3b(query):
+async def structure_fully_connected_2_4_2_qwen3_30b_a3b(query):
     model = "qwen/qwen3-30b-a3b"
 
     layer0_1 = Proposer(model, query)
@@ -1026,7 +1026,7 @@ async def structure_fully_connected_2_4_2_qwen_30b_a3b(query):
 
     return result, token_costs
 
-async def structure_complete_tree_3_2_qwen_30b_a3b(query):
+async def structure_complete_tree_3_2_qwen3_30b_a3b(query):
     model = "qwen/qwen3-30b-a3b"
 
     layer0_1 = Proposer(model, query)
