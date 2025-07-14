@@ -17,7 +17,7 @@ dependencies = [
     "toml>=0.10.2",
     "tqdm>=4.67.1",
     "transformers>=4.49.0",
-    "vllm>=0.7.3",
+    "vllm>=0.8.5.post1",
 ]
 
 [dependency-groups]
