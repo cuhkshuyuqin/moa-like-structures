@@ -31,6 +31,8 @@ async def evaluate():
                 try:
                     new_eval["output"] = await custom_test_model.a_generate(example["instruction"])
                     new_eval["generator"] = custom_test_model.get_model_name()
+                except asyncio.exceptions.CancelledError as e:
+                    return
                 except BaseException as e:
                     traceback.print_exc()
                     continue
@@ -39,21 +41,22 @@ async def evaluate():
             eval_set_evaluated.append(new_eval)
 
             # break # if only process 1 test case
-
+    except KeyboardInterrupt as e:
+        return
     except BaseException as e:
         traceback.print_exc()
 
-    current_results_dir = os.path.join(RESULTS_DIR, "alpaca")
-    os.makedirs(current_results_dir, exist_ok=True)
-
-    with open(os.path.join(current_results_dir, f"{START_TIME}_settings.txt"), "w") as file:
-        file.write(SETTINGS_INFO)
-
-    with open(os.path.join(current_results_dir, f"{START_TIME}_output.json"), "w", encoding="utf-8") as json_file:
-        json.dump(eval_set_evaluated, json_file, ensure_ascii=False, indent=4)
-
-    with open(os.path.join(current_results_dir, f"{START_TIME}_token_costs.txt"), "w") as file:
-        file.write(custom_test_model.get_token_costs())
-
 
 asyncio.run(evaluate())
+
+current_results_dir = os.path.join(RESULTS_DIR, "alpaca")
+os.makedirs(current_results_dir, exist_ok=True)
+
+with open(os.path.join(current_results_dir, f"{START_TIME}_settings.txt"), "w") as file:
+    file.write(SETTINGS_INFO)
+
+with open(os.path.join(current_results_dir, f"{START_TIME}_output.json"), "w", encoding="utf-8") as json_file:
+    json.dump(eval_set_evaluated, json_file, ensure_ascii=False, indent=4)
+
+with open(os.path.join(current_results_dir, f"{START_TIME}_token_costs.txt"), "w") as file:
+    file.write(custom_test_model.get_token_costs())

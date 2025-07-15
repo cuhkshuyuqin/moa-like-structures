@@ -80,5 +80,5 @@ openrouter = [
 "Qwen/Qwen3-0.6B" = 18018
 
 [inference.openrouter_providers]
-"qwen/qwen3-30b-a3b" = ["parasail/fp8"]
+"qwen/qwen3-30b-a3b" = ["novita/fp8"]
 "qwen/qwen3-14b" = ["deepinfra/fp8"]
