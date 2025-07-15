@@ -186,7 +186,10 @@ class BaseAgent:
             }) as response:
                 if response.status == 200:
                     response_json = await response.json()
-                    response_content = response_json["choices"][0]["message"]["content"]
+                    if response_json == None or "choices" not in response_json:
+                        response_content = ""
+                    else:
+                        response_content = response_json["choices"][0]["message"]["content"]
                 else:
                     logger.info(f"{str(self)} generate_openrouter:\nError when calling OpenRouter")
                     raise Exception("Error when calling OpenRouter")
