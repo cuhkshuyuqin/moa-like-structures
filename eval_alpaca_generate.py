@@ -10,7 +10,7 @@ from CustomTestModel import CustomTestModel, SETTINGS_INFO
 from utils import LOG_DIR, RESULTS_DIR, START_TIME
 
 JUMP = 0
-TRYING_TIMES = 5
+TRYING_TIMES = 10
 
 custom_test_model = CustomTestModel()
 
