@@ -12,9 +12,10 @@ wheels/
 # Deepeval
 .deepeval_telemetry.txt
 
-# Logs
+# Logs and Results
 logs/
 results/
+final_results/
 
 # Dotenv
 .env
