@@ -1595,3 +1595,144 @@ async def structure_single_model_general(query):
     }
 
     return result, token_costs
+
+async def structure_new_chain_1(query):
+    model = "qwen/qwen3-30b-a3b"
+
+    layer0_1 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1])
+
+    result = await layer2_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+    }
+
+    return result, token_costs
+
+async def structure_new_chain_2(query):
+    model = "qwen/qwen3-30b-a3b"
+
+    layer0_1 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1])
+
+    layer2_1 = Aggregator(model, query, [layer1_1])
+
+    result = await layer2_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+    }
+
+    return result, token_costs
+
+async def structure_new_chain_3(query):
+    model = "qwen/qwen3-30b-a3b"
+
+    layer0_1 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1])
+
+    layer2_1 = Aggregator(model, query, [layer1_1])
+
+    layer3_1 = Aggregator(model, query, [layer2_1])
+
+    result = await layer3_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+    }
+
+    return result, token_costs
+
+async def structure_new_chain_4(query):
+    model = "qwen/qwen3-30b-a3b"
+
+    layer0_1 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1])
+
+    layer2_1 = Aggregator(model, query, [layer1_1])
+
+    layer3_1 = Aggregator(model, query, [layer2_1])
+
+    layer4_1 = Aggregator(model, query, [layer3_1])
+
+    result = await layer4_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+    }
+
+    return result, token_costs
+
+async def structure_new_chain_5(query):
+    model = "qwen/qwen3-30b-a3b"
+
+    layer0_1 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1])
+
+    layer2_1 = Aggregator(model, query, [layer1_1])
+
+    layer3_1 = Aggregator(model, query, [layer2_1])
+
+    layer4_1 = Aggregator(model, query, [layer3_1])
+
+    layer5_1 = Aggregator(model, query, [layer4_1])
+
+    result = await layer5_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+        "layer5_1": layer5_1,
+    }
+
+    return result, token_costs
+
+async def structure_new_chain_6(query):
+    model = "qwen/qwen3-30b-a3b"
+
+    layer0_1 = Proposer(model, query)
+
+    layer1_1 = Aggregator(model, query, [layer0_1])
+
+    layer2_1 = Aggregator(model, query, [layer1_1])
+
+    layer3_1 = Aggregator(model, query, [layer2_1])
+
+    layer4_1 = Aggregator(model, query, [layer3_1])
+
+    layer5_1 = Aggregator(model, query, [layer4_1])
+
+    layer6_1 = Aggregator(model, query, [layer5_1])
+
+    result = await layer6_1.generate()
+
+    token_costs = {
+        "layer0_1": layer0_1,
+        "layer1_1": layer1_1,
+        "layer2_1": layer2_1,
+        "layer3_1": layer3_1,
+        "layer4_1": layer4_1,
+        "layer5_1": layer5_1,
+        "layer6_1": layer6_1,
+    }
+
+    return result, token_costs
