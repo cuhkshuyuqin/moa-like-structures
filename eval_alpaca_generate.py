@@ -10,6 +10,7 @@ from CustomTestModel import CustomTestModel, SETTINGS_INFO
 from utils import LOG_DIR, RESULTS_DIR, START_TIME
 
 JUMP = 0
+TERMS = 10000
 TRYING_TIMES = 10
 
 custom_test_model = CustomTestModel()
@@ -20,10 +21,16 @@ eval_set_evaluated = []
 async def evaluate():
     try:
         jump_count = 0
+        term_count = 0
         for example in tqdm(eval_set):
             if jump_count < JUMP:
                 jump_count += 1
                 continue
+            
+            if term_count >= TERMS:
+                break
+            else:
+                term_count += 1
 
             new_eval = copy.deepcopy(example)
 
@@ -40,7 +47,6 @@ async def evaluate():
 
             eval_set_evaluated.append(new_eval)
 
-            # break # if only process 1 test case
     except KeyboardInterrupt as e:
         return
     except BaseException as e:
